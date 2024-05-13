@@ -15,7 +15,9 @@ class TransactionsController extends Controller
     public function transactionsAll(Request $request) {
         $user = $request->user();
         $type = $request->type;
-        $order = $user->transactions()->latest()->with(["user"])->when($request->type, function ($q) use ($type) {
+        $order = $user->transactions()->latest()->with(["user" => function ($q) {
+            $q->select("name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified");
+        }])->when($request->type, function ($q) use ($type) {
             $q->where("type",  $type);
         })->get();
 
