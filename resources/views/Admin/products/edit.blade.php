@@ -32,7 +32,7 @@
                 <input type="number" class="form-control" id="wholesale_price"  placeholder="Wholesale Price" v-model="wholesale_price">
             </div>
             <div class="form-group w-100">
-                <label for="least_quantity_wholesale" class="form-label">Wholesale Price</label>
+                <label for="least_quantity_wholesale" class="form-label">Least quantity Price</label>
                 <input type="number" class="form-control" id="least_quantity_wholesale"  placeholder="Least quantity wholesale" v-model="least_quantity_wholesale">
             </div>
             <div class="form-group w-100">
