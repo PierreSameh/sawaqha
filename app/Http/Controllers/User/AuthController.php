@@ -166,7 +166,7 @@ class AuthController extends Controller
         $code = $request->code;
 
         if ($user) {
-            if (!Hash::check($code, $user->email_last_verfication_code)) {
+            if (!Hash::check($code, $user->email_last_verfication_code ? $user->email_last_verfication_code : Hash::make(0000))) {
                 return $this->handleResponse(
                     false,
                     "",
@@ -235,7 +235,7 @@ class AuthController extends Controller
         $user = $request->user();
 
         if ($user) {
-            if (!Hash::check($request->old_password, $user->password)) {
+            if (!Hash::check($code, $user->email_last_verfication_code ? $user->email_last_verfication_code : Hash::make(0000))) {
                 return $this->handleResponse(
                     true,
                     "",
@@ -245,7 +245,7 @@ class AuthController extends Controller
                 );
             }
 
-            $user->password = Hash::make($user->password);
+            $user->password = Hash::make($request->password);
             $user->save();
 
             return $this->handleResponse(
@@ -409,8 +409,8 @@ class AuthController extends Controller
                     ]
                 );
 
-            if (!Hash::check($code, $user->email_last_verfication_code)) {
-                return $this->handleResponse(
+            if (!Hash::check($code, $user->email_last_verfication_code ? $user->email_last_verfication_code : Hash::make(0000))) {
+                    return $this->handleResponse(
                     false,
                     "",
                     ["الرمز غير صحيح"],
