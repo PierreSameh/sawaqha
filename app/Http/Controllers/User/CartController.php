@@ -228,8 +228,8 @@ class CartController extends Controller
                 if ($item_product) :
                     $item->total = (int) $item->quantity >= (int) $item_product->least_quantity_wholesale ? ((int) $item_product->wholesale_price * (int) $item->quantity) : ((int) $item_product->price * (int) $item->quantity);
                     $sub_total += $item->total;
-                    $item->product = $item_product;
                 endif;
+                $item->product = $item_product ?? "This product is missing may deleted!";
             }
 
         $cartDetails = [
