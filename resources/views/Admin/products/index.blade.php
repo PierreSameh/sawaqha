@@ -21,6 +21,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Description</th>
+                        <th>Avilable quantity</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -29,6 +30,7 @@
                         <tr>
                             <td>{{ $prod->name }}</td>
                             <td>{{ substr($prod->description, 0, 100) }}</td>
+                            <td>{{ $prod->quantity }}</td>
                             <td>
                                 <a href="{{ route("admin.products.edit", ["id" => $prod->id]) }}" class="btn btn-success">Edit</a>
                                 <a href="{{ route("admin.products.delete.confirm", ["id" => $prod->id]) }}" class="btn btn-danger">Delete</a>
