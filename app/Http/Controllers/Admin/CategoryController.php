@@ -8,6 +8,7 @@ use App\HandleResponseTrait;
 use App\SaveImageTrait;
 use App\DeleteImageTrait;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
@@ -125,7 +126,7 @@ class CategoryController extends Controller
         $category = Category::find($request->id);
 
         if ($request->thumbnail) {
-            $this->deleteFile(public_path($category->thumbnail_path));
+            $this->deleteFile(base_path($category->thumbnail_path));
             $image = $this->saveImg($request->thumbnail, 'images/uploads/Categories', $request->name);
             $category->thumbnail_path= '/images/uploads/Categories/' . $image;
         }
@@ -160,6 +161,32 @@ class CategoryController extends Controller
         );
     }
 
+    public function deleteProduct($id) {
+        $product = Product::with("gallery")->find($request->id);
+
+        if ($product->gallery) {
+            foreach ($product->gallery as $img) {
+                $this->deleteFile(base_path($img['path']));
+                $imageD = Gallery::find($img['id']);
+                $imageD->delete();
+            }
+        }
+
+
+        $product->delete();
+
+        if ($product)
+            return $this->handleResponse(
+                true,
+                "تم حذف المنتج بنجاح",
+                [],
+                [],
+                []
+            );
+
+    }
+
+
     public function delete(Request $request) {
         $validator = Validator::make($request->all(), [
             "id" => ["required"],
@@ -180,7 +207,10 @@ class CategoryController extends Controller
 
         $this->deleteFile(base_path($category->thumbnail_path));
 
-        $category->products()->delete();
+        foreach ($category->products()->get() as $prod) {
+            $this->deleteProduct($prod->id);
+        }
+
         $category->delete();
 
         if ($category)

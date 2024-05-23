@@ -168,7 +168,7 @@ class ProductsController extends Controller
 
         if ($request->deleted_gallery) {
             foreach ($request->deleted_gallery as $img) {
-                $this->deleteFile(public_path($img['path']));
+                $this->deleteFile(base_path($img['path']));
                 $imageD = Gallery::find($img['id']);
                 $imageD->delete();
             }
@@ -232,7 +232,7 @@ class ProductsController extends Controller
 
         if ($product->gallery) {
             foreach ($product->gallery as $img) {
-                $this->deleteFile(public_path($img['path']));
+                $this->deleteFile(base_path($img['path']));
                 $imageD = Gallery::find($img['id']);
                 $imageD->delete();
             }
