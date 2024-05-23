@@ -190,10 +190,11 @@ class OrdersController extends Controller
             if ($order->user->user_type == 1) {
                 $order->user->expected_profit = $order->user->expected_profit - ((float) $order->total_sell_price - (float) $order->sub_total);
                 $order->user->save();
-                foreach ($order->products as $item) {
-                    $item->product->quantity = (int) $item->product->quantity + (int) $item->ordered_quantity ;
-                    $item->product->save();
-                }
+                if ($order->products()->count() > 0)
+                    foreach ($order->products as $item) {
+                        $item->product->quantity = (int) $item->product->quantity + (int) $item->ordered_quantity ;
+                        $item->product->save();
+                    }
                 if ($order->user) {
                     $msg_title = "تم الغاء الطلب";
                     $msg_content = "<h1>";
