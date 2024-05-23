@@ -56,6 +56,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Order', 'user_id');
     }
 
+    public function withdrawRequests()
+    {
+        return $this->hasMany('App\Models\Money_request', 'user_id');
+    }
+
     public function transactions()
     {
         return $this->hasMany('App\Models\Transaction', 'user_id');

@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrdersController;
+use App\Http\Controllers\Admin\MoneyRequestsContrller;
 use App\Http\Middleware\GuestAdminMiddleware;
 
 Route::prefix('admin')->group(function () {
@@ -54,6 +55,20 @@ Route::prefix('admin')->group(function () {
             Route::get("/order/cancel/{id}", [OrdersController::class, "cancelIndex"])->name("admin.orders.cancel");
             Route::post("/order/cancel/confirm/{id}", [OrdersController::class, "cancel"])->name("admin.orders.cancel.post");
             Route::get("/order/success/{id}", [OrdersController::class, "successIndex"])->name("admin.orders.success");
+        });
+        // Requests
+        Route::prefix('requests')->group(function () {
+            Route::get("/request/{id}", [MoneyRequestsContrller::class, "request"])->name("admin.requests.request.details");
+            Route::get("/all", [MoneyRequestsContrller::class, "index"])->name("admin.requests.show.all");
+            Route::get("/review", [MoneyRequestsContrller::class, "indexReview"])->name("admin.requests.show.review");
+            Route::get("/completed", [MoneyRequestsContrller::class, "indexCompleted"])->name("admin.requests.show.completed");
+            Route::get("/canceled", [MoneyRequestsContrller::class, "indexCanceled"])->name("admin.requests.show.canceled");
+
+            Route::get("/request/approve/{id}", [MoneyRequestsContrller::class, "approveIndex"])->name("admin.requests.approve");
+            Route::post("/request/approve/confirm/{id}", [MoneyRequestsContrller::class, "approve"])->name("admin.requests.approve.post");
+            Route::get("/request/cancel/{id}", [MoneyRequestsContrller::class, "cancelIndex"])->name("admin.requests.cancel");
+            Route::post("/request/cancel/confirm/{id}", [MoneyRequestsContrller::class, "cancel"])->name("admin.requests.cancel.post");
+            Route::get("/request/success/{id}", [MoneyRequestsContrller::class, "successIndex"])->name("admin.requests.success");
         });
     });
 });

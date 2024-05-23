@@ -51,6 +51,8 @@ Route::get("/orders/user/all", [OrdersController::class, "ordersAll"])->middlewa
 Route::get("/orders/user/pagination", [OrdersController::class, "ordersPagination"])->middleware('auth:sanctum');
 Route::get("/orders/user/search/all", [OrdersController::class, "searchOrdersAll"])->middleware('auth:sanctum');
 Route::get("/orders/user/search/pagination", [OrdersController::class, "searchOrdersPagination"])->middleware('auth:sanctum');
+Route::post("/orders/user/request/withdraw", [OrdersController::class, "requestMoney"])->middleware('auth:sanctum');
+Route::get("/orders/user/request/withdraw/get", [OrdersController::class, "getRequests"])->middleware('auth:sanctum');
 
 // Teansactions endpoints
 Route::get("/transactions/user/all", [TransactionsController::class, "transactionsAll"])->middleware('auth:sanctum');

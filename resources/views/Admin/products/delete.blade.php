@@ -10,7 +10,7 @@
             class="fas fa-arrow-left fa-sm text-white-50"></i> Back</a>
 </div>
 
-<div class="card p-3" id="products_wrapper">
+<div class="card p-3 mb-3" id="products_wrapper">
     <div class="card-header mb-3">
         <h3 class="text-danger text-center mb-0">Are you sure you want to delete this product?</h3>
     </div>

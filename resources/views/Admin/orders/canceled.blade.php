@@ -3,7 +3,8 @@
 @section("title", "Orders - Completed")
 
 @php
-    $orders = App\Models\Order::with("user")->where("status", 0)->get();
+    $orders = App\Models\Order::latest()->with("user")->where("status", 0)->paginate(15);
+
 @endphp
 
 @section("content")
@@ -14,7 +15,7 @@
 <div class="card shadow mb-4">
     <div class="card-body">
         <div class="table-responsive p-2">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="white-space: nowrap;">
+            <table class="table table-bordered" width="100%" cellspacing="0" style="white-space: nowrap;">
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -51,6 +52,11 @@
                 </tbody>
             </table>
         </div>
+        @if ($orders->hasPages())
+            <div class="d-flex laravel_pagination mt-5">
+                {!! $orders->links() !!}
+            </div>
+        @endif
     </div>
 </div>
 

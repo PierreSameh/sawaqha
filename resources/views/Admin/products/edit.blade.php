@@ -12,7 +12,7 @@
 @php
     $categories = App\Models\Category::latest()->get();
 @endphp
-<div class="card p-3" id="products_wrapper">
+<div class="card p-3 mb-3" id="products_wrapper">
     <div class="d-flex justify-content-between" style="gap: 16px">
         <div class="w-50">
             <div class="form-group w-100">

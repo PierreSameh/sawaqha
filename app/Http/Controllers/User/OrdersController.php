@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\HandleResponseTrait;
 use App\Models\Order;
+use App\Models\Money_request;
 use App\Models\Product;
 use App\Models\Ordered_Product;
 use Illuminate\Support\Facades\Validator;
@@ -382,6 +383,105 @@ class OrdersController extends Controller
             [],
             []
         );
+    }
+
+    public function requestMoney(Request $request) {
+        $validator = Validator::make($request->all(), [
+            "amount" => ["required", "numeric"],
+            "way_of_getting_money" => ["required"],
+            "wallet_or_card_number" => ["required"],
+        ], [
+            "amount.required" => "من فضلك ادخل المبلغ المراد سحبه",
+            "amount.numeric" => "يجب ان يكون المبلغ رقم",
+            "way_of_getting_money.required" => "الرجاء ادخال الطريقة المراد استلام المبلغ من خلالها",
+            "wallet_or_card_number.required" => "ارخل رقم المحفظة او رقم الحساب البنكي",
+        ]);
+
+        if ($validator->fails()) {
+            return $this->handleResponse(
+                false,
+                "",
+                [$validator->errors()->first()],
+                [],
+                []
+            );
+        }
+
+        $user = $request->user();
+        if ($user) {
+            if ($user->withdrawRequests()->where("status", 1)->get()->count() > 0)
+                return $this->handleResponse(
+                    false,
+                    "",
+                    ["لا يمكنك اجراء طلب سحب حتى ينتهي طلبك الماضي من المراجعة"],
+                    [],
+                    []
+                );
+
+            if ((int) $user->balance < (int) $request->amount) {
+                return $this->handleResponse(
+                    false,
+                    "",
+                    ["لا يوجد رصيد كافي لسحب هذا المبلغ"],
+                    [],
+                    []
+                );
+            }
+
+            $create_request = Money_request::create([
+                "user_id" => $user->id,
+                "amount" => $request->amount,
+                "way_of_getting_money" => $request->way_of_getting_money,
+                "wallet_or_card_number" => $request->wallet_or_card_number
+            ]);
+
+            if ($create_request) {
+                $msg_content = "<h1>طبل سحب من المسوق: ";
+                $msg_content .= $user->name;
+                $msg_content .= "</h1>";
+                $msg_content .= "<h2>تفاصيل الطلب: </h2>";
+                $msg_content .= "<h3>الطريقة المراد استلام التحويل من خلالها: </h3>";
+                $msg_content .= $create_request->way_of_getting_money;
+                $msg_content .= "<h3>رقم الحساب او المحفظة: </h3>";
+                $msg_content .= $create_request->way_of_getting_money;
+                $msg_content .= "<h3>المبلغ المراد سحبه: </h3>";
+                $msg_content .= $create_request->amount;
+
+                $this->sendEmail("kotbekareem74@gmail.com", "طلب سحب", $msg_content);
+
+                return $this->handleResponse(
+                    true,
+                    "تم تقديم الطلب بنجاح سوف تتم مراجعته في اقرب وقت!",
+                    [],
+                    [],
+                    []
+                );
+            }
+        } else {
+        }
+
+    }
+
+    public function getRequests(Request $request) {
+        $user = $request->user();
+        $requests = $user->withdrawRequests();
+
+        return $this->handleResponse(
+            true,
+            "عملية ناجحة",
+            [],
+            [$requests],
+            [
+                "parameters" => [
+                    "status" => [
+                        1 => "تحت المراجعة",
+                        2 => "تم التاكيد",
+                        0 => "فشل او الغى",
+                    ]
+                ]
+            ]
+        );
+
     }
 
 }

@@ -8,7 +8,7 @@ trait HandleResponseTrait
     {
       return response()->json([
         "status" => $status,
-        "message" => $msg,
+        "message" => count($errors) == 1 ? $errors[0] : $msg,
         "errors" => $errors,
         "data" => $data,
         "notes" => $notes

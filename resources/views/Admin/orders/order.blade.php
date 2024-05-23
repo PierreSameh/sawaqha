@@ -8,7 +8,7 @@
     <a href="{{ route("admin.orders.show.all") }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
             class="fas fa-arrow-left fa-sm text-white-50"></i> Back</a>
 </div>
-<div class="card p-3">
+<div class="card p-3 mb-3">
     <h2>Orderd by:</h2>
     <div class="user_details" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
         <div class="form-group">

@@ -10,7 +10,7 @@
             class="fas fa-arrow-left fa-sm text-white-50"></i> Back</a>
 </div>
 
-<div class="card p-3" id="categories_wrapper">
+<div class="card p-3 mb-3" id="categories_wrapper">
     <div class="d-flex justify-content-between" style="gap: 16px">
         <div class="w-100">
             <div class="form-group w-100">

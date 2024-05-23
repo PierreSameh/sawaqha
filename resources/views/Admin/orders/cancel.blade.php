@@ -9,7 +9,7 @@
          this order?
     </h1>
 </div>
-<div class="card p-3">
+<div class="card p-3 mb-3">
     <h2>Orderd by:</h2>
     <div class="user_details" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
         <div class="form-group">

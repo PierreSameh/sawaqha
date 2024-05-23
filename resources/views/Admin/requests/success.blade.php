@@ -14,8 +14,8 @@
             <path d="M9 12h2" />
           </svg>
         <div class="btns d-flex justify-content-center align-items-center">
-            <a href="{{route('admin.orders.order.details', ['id' => $order->id])}}" class="btn btn-info w-25 m-3">Show Order</a>
-            <a href="{{route('admin.orders.show.all')}}" class="btn btn-secondary w-25 m-3">Back To List</a>
+            <a href="{{route('admin.requests.request.details', ['id' => $request->id])}}" class="btn btn-info w-25 m-3">Show request</a>
+            <a href="{{route('admin.requests.show.all')}}" class="btn btn-secondary w-25 m-3">Back To List</a>
         </div>
     </div>
 @endSection

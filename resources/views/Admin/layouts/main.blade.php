@@ -24,11 +24,11 @@
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Russo+One&display=swap");
 
-        svg {
+        .loader svg {
             font-family: "Russo One", sans-serif;
             width: 100%; height: 100%;
         }
-        svg text {
+        .loader svg text {
             animation: stroke 6s infinite alternate;
             stroke-width: 1px;
             stroke: #365FA0;
@@ -93,6 +93,23 @@
 
         .dataTables_wrapper  {
             width: max-content;
+        }
+
+        .laravel_pagination > nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .laravel_pagination > nav svg {
+            width: 35px;
+            height: 35px;
+        }
+        .laravel_pagination > nav >div:last-child {
+            display: flex;
+            flex-direction: column-reverse;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
         }
 
     </style>
@@ -199,6 +216,23 @@
                         <a class="collapse-item" href="{{ route("admin.orders.show.delivary") }}">On delivery</a>
                         <a class="collapse-item" href="{{ route("admin.orders.show.completed") }}">Completed</a>
                         <a class="collapse-item" href="{{ route("admin.orders.show.canceled") }}">Canceled</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#heading4"
+                    aria-expanded="true" aria-controls="heading3">
+                    <i class="fas fa-fw fa-money-bill"></i>
+                    <span>Requests</span>
+                </a>
+                <div id="heading4" class="collapse" aria-labelledby="heading3" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ route("admin.requests.show.all") }}">All</a>
+                        <a class="collapse-item" href="{{ route("admin.requests.show.review") }}">Under review</a>
+                        <a class="collapse-item" href="{{ route("admin.requests.show.completed") }}">Completed</a>
+                        <a class="collapse-item" href="{{ route("admin.requests.show.canceled") }}">Canceled</a>
                     </div>
                 </div>
             </li>
