@@ -90,7 +90,7 @@
                         <td>{{ $product->product->category->name }}</td>
                     </tr>
                     @else
-                    <tr class="text-center">
+                    <tr class="text-center text-danger">
                         <td colspan="5">Missing Product may be deleted</td>
                     </tr>
                     @endif
