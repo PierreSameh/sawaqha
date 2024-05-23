@@ -232,7 +232,9 @@ class OrdersController extends Controller
             $q->with(["product" => function ($q) {
                 $q->with("category");
             }]);
-        }, "user"])->get();
+        }, "user"])->when($request->status, function ($q) use ($status) {
+            $q->where("status",  $status);
+        })->get();
 
         return $this->handleResponse(
             true,
