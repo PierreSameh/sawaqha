@@ -81,7 +81,7 @@
             </thead>
             <tbody>
                     @foreach ($order->products as $product)
-                    @if($product)
+                    @if($product->product)
                     <tr>
                         <td>{{ $product->product->id }}</td>
                         <td>{{ $product->product->name }}</td>
