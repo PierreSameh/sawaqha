@@ -464,7 +464,7 @@ class OrdersController extends Controller
 
     public function getRequests(Request $request) {
         $user = $request->user();
-        $requests = $user->withdrawRequests();
+        $requests = $user->withdrawRequests()->get();
 
         return $this->handleResponse(
             true,

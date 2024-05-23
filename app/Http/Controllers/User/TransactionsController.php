@@ -16,7 +16,7 @@ class TransactionsController extends Controller
         $user = $request->user();
         $type = $request->type;
         $order = $user->transactions()->latest()->with(["user" => function ($q) {
-            $q->select("id", "name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified");
+            $q->select("id", "name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified", "balance", "expected_profit");
         }])->when($request->type, function ($q) use ($type) {
             $q->where("type",  $type);
         })->get();
@@ -43,7 +43,7 @@ class TransactionsController extends Controller
         $user = $request->user();
         $type = $request->type;
         $order = $user->transactions()->latest()->with(["user" => function ($q) {
-            $q->select("id", "name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified");
+            $q->select("id", "name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified", "balance", "expected_profit");
         }])->when($request->type, function ($q) use ($type) {
             $q->where("type",  $type);
         })->paginate($per_page);

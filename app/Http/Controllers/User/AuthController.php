@@ -85,7 +85,7 @@ class AuthController extends Controller
                 "تم انشاء حسابك بنجاح",
                 [],
                 [
-                    "user" => $user->only("name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified"),
+                    "user" => $user->only("name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified", "balance", "expected_profit"),
                     "token" => $token
                 ],
                 [
@@ -505,7 +505,7 @@ class AuthController extends Controller
                             "تم التسجيل بنجاح",
                             [],
                             [
-                                "user" => $userManual->only("name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified"),
+                                "user" => $userManual->only("name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified", "balance", "expected_profit"),
                                 "token" => $token
                             ],
                             [
@@ -542,7 +542,7 @@ class AuthController extends Controller
                                 "تم التسجيل بنجاح",
                                 [],
                                 [
-                                    "user" => $userGoogle->only("name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified"),
+                                    "user" => $userGoogle->only("name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified", "balance", "expected_profit"),
                                     "token" => $tokenGoogle
                                 ],
                                 [
@@ -572,7 +572,7 @@ class AuthController extends Controller
                             "تم التسجيل بنجاح",
                             [],
                             [
-                                "user" => $tokenFacebook->only("name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified"),
+                                "user" => $tokenFacebook->only("name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified", "balance", "expected_profit"),
                                 "token" => $tokenFacebook
                             ],
                             [
@@ -667,7 +667,7 @@ class AuthController extends Controller
                     "تم تحديث البيانات بنجاح",
                     [],
                     [
-                        "user" => $user->only("name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified")
+                        "user" => $user->only("name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified", "balance", "expected_profit")
                     ],
                     [
                         "validation" => [
@@ -700,7 +700,7 @@ class AuthController extends Controller
                 "عملية ناجحة",
                 [],
                 [
-                    "user" => $user->only("name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified")
+                    "user" => $user->only("name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified", "balance", "expected_profit")
                 ],
                 [
                     "user_type" => [
