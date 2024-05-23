@@ -222,12 +222,14 @@ class CartController extends Controller
 
         if ($cart->count() > 0)
             foreach ($cart as $item) {
-                $item_product = $item->product()->with(["gallery" => function ($q) {
-                    $q->take(1);
-                }])->first();
-                $item->total = (int) $item->quantity >= (int) $item_product->least_quantity_wholesale ? ((int) $item_product->wholesale_price * (int) $item->quantity) : ((int) $item_product->price * (int) $item->quantity);
-                $sub_total += $item->total;
-                $item->product = $item_product;
+                if ($item->product()) :
+                    $item_product = $item->product()->with(["gallery" => function ($q) {
+                        $q->take(1);
+                    }])->first();
+                    $item->total = (int) $item->quantity >= (int) $item_product->least_quantity_wholesale ? ((int) $item_product->wholesale_price * (int) $item->quantity) : ((int) $item_product->price * (int) $item->quantity);
+                    $sub_total += $item->total;
+                    $item->product = $item_product;
+                endif;
             }
 
         $cartDetails = [
