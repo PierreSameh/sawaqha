@@ -80,8 +80,8 @@
                 </tr>
             </thead>
             <tbody>
-                @if($order->products()->count() > 0)
                     @foreach ($order->products as $product)
+                    @if($product)
                     <tr>
                         <td>{{ $product->product->id }}</td>
                         <td>{{ $product->product->name }}</td>
@@ -89,12 +89,13 @@
                         <td>{{ $product->ordered_quantity }}</td>
                         <td>{{ $product->product->category->name }}</td>
                     </tr>
+                    @else
+                    <tr class="text-center">
+                        <td colspan="5">Missing Product may be deleted</td>
+                    </tr>
+                    @endif
                     @endforeach
                 @else
-                <tr>
-                    <td colspan="5">This order products is missing may be deleted!/td>
-                </tr>
-                @endif
             </tbody>
         </table>
     </div>
