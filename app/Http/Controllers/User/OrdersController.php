@@ -265,7 +265,7 @@ class OrdersController extends Controller
             $q->with(["product" => function ($q) {
                 $q->with("category");
             }]);
-        }, "user"])->when($request->status || $request->status == 0, function ($q) use ($status) {
+        }, "user"])->when($status !== null, function ($q) use ($status) {
             $q->where("status",  $status);
         })->paginate($per_page);
 
@@ -298,7 +298,7 @@ class OrdersController extends Controller
             $q->with(["product" => function ($q) {
                 $q->with("category");
             }]);
-        }, "user"])->when($request->status || $request->status == 0, function ($q) use ($status) {
+        }, "user"])->when($status !== null, function ($q) use ($status) {
             $q->where("status",  $status);
         })
         ->where(function ($query) use ($search) {
@@ -339,7 +339,7 @@ class OrdersController extends Controller
             $q->with(["product" => function ($q) {
                 $q->with("category");
             }]);
-        }, "user"])->when($request->status || $request->status == 0, function ($q) use ($status) {
+        }, "user"])->when($status !== null, function ($q) use ($status) {
             $q->where("status",  $status);
         })
         ->where(function ($query) use ($search) {
