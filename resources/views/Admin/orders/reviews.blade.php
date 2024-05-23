@@ -3,7 +3,7 @@
 @section("title", "Orders - Under Review")
 
 @php
-    $orders = App\Models\Order::latest()->with("user")->paginate(15);
+    $orders = App\Models\Order::latest()->with("user")->where("status", 1)->paginate(15);
 @endphp
 
 @section("content")
