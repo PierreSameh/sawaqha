@@ -240,7 +240,7 @@ class OrdersController extends Controller
             true,
             "عملية ناجحة",
             [],
-            [$user->orders()->get()],
+            [$order],
             [
                 "parameters" => [
                     "note" => "ال status مش مفروضة",
