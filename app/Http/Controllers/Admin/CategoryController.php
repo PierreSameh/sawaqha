@@ -9,6 +9,7 @@ use App\SaveImageTrait;
 use App\DeleteImageTrait;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Gallery;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
