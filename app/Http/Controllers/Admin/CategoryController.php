@@ -162,7 +162,7 @@ class CategoryController extends Controller
     }
 
     public function deleteProduct($id) {
-        $product = Product::with("gallery")->find($request->id);
+        $product = Product::with("gallery")->find($id);
 
         if ($product->gallery) {
             foreach ($product->gallery as $img) {
