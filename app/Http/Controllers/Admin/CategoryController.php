@@ -178,8 +178,7 @@ class CategoryController extends Controller
 
         $category = Category::find($request->id);
 
-        unlink(base_path($category->thumbnail_path));
-        $this->deleteFile($category->thumbnail_path);
+        $this->deleteFile(base_path($category->thumbnail_path));
 
         $category->products()->delete();
         $category->delete();
