@@ -55,11 +55,12 @@ class OrdersController extends Controller
         // get cart sub total
         if ($cart->count() > 0)
             foreach ($cart as $item) {
-                $item_product = $item->product()->with(["gallery" => function ($q) {
-                    $q->take(1);
-                }])->first();
-                $item->total = (int) $item->quantity >= (int) $item_product->least_quantity_wholesale ? ((int) $item_product->wholesale_price * (int) $item->quantity) : ((int) $item_product->price * (int) $item->quantity);
-                $sub_total += $item->total;
+                if ($item_product) :
+                    $item->total = (int) $item->quantity >= (int) $item_product->least_quantity_wholesale ? ((int) $item_product->wholesale_price * (int) $item->quantity) : ((int) $item_product->price * (int) $item->quantity);
+                    $sub_total += $item->total;
+                endif;
+                $item->dose_product_missing = $item_product ? false : true;
+                $item->product = $item_product ?? "This product is missing may deleted!";
             }
 
         // check if user is markter so ask for order sell price
@@ -134,15 +135,19 @@ class OrdersController extends Controller
             );
         }else {
             foreach ($cart as $item) {
-                $record_product = Ordered_Product::create([
-                    "order_id" => $order->id,
-                    "product_id" => $item["product_id"],
-                    "price_in_order" => $item["product"]["price"],
-                    "ordered_quantity" => $item["quantity"],
-                ]);
+                if (!$item->dose_product_missing) {
+                    $record_product = Ordered_Product::create([
+                        "order_id" => $order->id,
+                        "product_id" => $item["product_id"],
+                        "price_in_order" => $item["product"]["price"],
+                        "ordered_quantity" => $item["quantity"],
+                    ]);
+                }
                 $product = Product::find($item["product_id"]);
-                $product->quantity = (int) $product->quantity - (int) $item["quantity"];
-                $product->save();
+                if ($product) {
+                    $product->quantity = (int) $product->quantity - (int) $item["quantity"];
+                    $product->save();
+                }
                 $item->delete();
             }
 
