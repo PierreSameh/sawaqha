@@ -95,7 +95,6 @@
                     </tr>
                     @endif
                     @endforeach
-                @else
             </tbody>
         </table>
     </div>
