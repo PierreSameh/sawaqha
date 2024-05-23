@@ -32,7 +32,7 @@
                 <tbody>
                     @foreach ($orders as $order)
                         <tr>
-                            <td>{{ $order->user->name }}</td>
+                            <td>{{ $order->user ? $order->user->name : "Missing" }}</td>
                             <td>{{ $order->user_type }}</td>
                             <td>{{ $order->recipient_name }}</td>
                             <td>{{ $order->recipient_phone }}</td>

@@ -14,7 +14,7 @@
     <div class="user_details" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
         <div class="form-group">
             <label>User Name</label>
-            <span class="form-control">{{ $order->user->name }}</span>
+            <span class="form-control">{{ $order->user ? $order->user->name : "Missing" }}</span>
         </div>
         <div class="form-group">
             <label>User Email</label>
