@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\HandleResponseTrait;
 use App\Models\Product;
+use App\Models\Order;
 use App\Models\Category;
 use Illuminate\Support\Facades\Validator;
 
@@ -261,4 +262,13 @@ class ProductsController extends Controller
         }
     }
 
+    public function getMostSelled() {
+
+        $completedOrders = Order::with("products")->where("status", 4)->get();
+        return $topProducts = Product::
+        withCount('orders') // Count occurrences of each product in orders
+        ->orderBy('orders_count', 'desc') // Order by descending count
+        ->limit(10) // Limit to top 10 products (adjust as needed)
+        ->get();
+    }
 }

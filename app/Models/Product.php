@@ -11,6 +11,7 @@ class Product extends Model
 
     protected $fillable = [
         "name",
+        "main_image",
         "description",
         "quantity",
         "price",
@@ -28,5 +29,10 @@ class Product extends Model
     {
         return $this->belongsTo('App\Models\Category', 'category_id');
     }
+    public function orders()
+    {
+        return $this->hasMany('App\Models\Ordered_Product', 'product_id');
+    }
+
 
 }

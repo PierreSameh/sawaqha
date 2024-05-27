@@ -33,6 +33,7 @@ Route::get("/products/get-products-search", [ProductsController::class, "search"
 Route::get("/products/get-products-per-category-all", [ProductsController::class, "getProductsPerCategoryAll"]);
 Route::get("/products/get-products-per-category-pagination", [ProductsController::class, "getProductsPerCategoryPagination"]);
 Route::get("/products/get-product-by-id", [ProductsController::class, "getProduct"]);
+Route::get("/products/get-most-selled", [ProductsController::class, "getMostSelled"]);
 
 // Cart endpoints
 Route::post("/cart/put-product", [CartController::class, "addProductToCart"])->middleware('auth:sanctum');

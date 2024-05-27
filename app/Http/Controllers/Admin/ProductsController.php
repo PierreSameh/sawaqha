@@ -48,8 +48,10 @@ class ProductsController extends Controller
             "wholesale_price" => ["required", "numeric"],
             "least_quantity_wholesale" => ["required", "numeric"],
             'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'main_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ], [
             "name.required" => "ادخل اسم المنتج",
+            "main_image.required" => "ارفع الصورة الرئيسية للمنتج",
             "category_id.required" => "اختر القسم",
             "description.required" => "ادخل وصف المنتج",
             "quantity.required" => "ادخل الكمية المتاحة من المنتج",
@@ -81,11 +83,13 @@ class ProductsController extends Controller
             );
         }
 
+        $main_image_name = $this->saveImg($request->main_image, 'images/uploads/Products');
         $product = Product::create([
             "name" => $request->name,
             "description" => $request->description,
             "quantity" => $request->quantity,
             "price" => $request->price,
+            "main_image" => '/images/uploads/Products/' . $main_image_name,
             "category_id" => $request->category_id,
             "wholesale_price" => $request->wholesale_price,
             "least_quantity_wholesale" => $request->least_quantity_wholesale,
@@ -124,6 +128,7 @@ class ProductsController extends Controller
             "wholesale_price" => ["required", "numeric"],
             "least_quantity_wholesale" => ["required", "numeric"],
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'main_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ], [
             "name.required" => "ادخل اسم المنتج",
             "description.required" => "ادخل وصف المنتج",
@@ -156,6 +161,11 @@ class ProductsController extends Controller
                 [],
                 []
             );
+        }
+
+        if ($request->main_image) {
+            $main_image_name = $this->saveImg($request->main_image, 'images/uploads/Products');
+            $product->main_image = '/images/uploads/Products/' . $main_image_name;
         }
 
         $product->name = $request->name;
