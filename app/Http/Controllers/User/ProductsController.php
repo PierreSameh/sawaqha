@@ -19,7 +19,7 @@ class ProductsController extends Controller
     public function addIsFavKey($products, $authorization) {
         $user = null;
 
-        $authorizationHeader = $authorization;
+        $authorizationHeader = $authorization ? $authorization : false;
 
         if ($authorizationHeader) {
             try {
