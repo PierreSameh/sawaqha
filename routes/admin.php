@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\Admin\MoneyRequestsContrller;
+use App\Http\Controllers\Admin\BacnnerController;
 use App\Http\Middleware\GuestAdminMiddleware;
 
 Route::prefix('admin')->group(function () {
@@ -29,9 +30,22 @@ Route::prefix('admin')->group(function () {
             Route::post("/delete", [CategoryController::class, "delete"])->name("admin.categories.delete");
         });
 
+        // Banners
+        Route::prefix('banners')->group(function () {
+            Route::get("/", [BacnnerController::class, "index"])->name("admin.banners.show");
+            Route::get("/get", [BacnnerController::class, "get"])->name("admin.banners.get");
+            Route::get("/create", [BacnnerController::class, "add"])->name("admin.banners.add");
+            Route::post("/create", [BacnnerController::class, "create"])->name("admin.banners.create");
+            Route::get("/edit/{id}", [BacnnerController::class, "edit"])->name("admin.banners.edit");
+            Route::post("/update", [BacnnerController::class, "update"])->name("admin.banners.update");
+            Route::get("/delete/{id}", [BacnnerController::class, "deleteIndex"])->name("admin.banners.delete.confirm");
+            Route::post("/delete", [BacnnerController::class, "delete"])->name("admin.banners.delete");
+        });
+
         // Products
         Route::prefix('products')->group(function () {
             Route::get("/", [ProductsController::class, "index"])->name("admin.products.show");
+            Route::get("/toggle-disc/{id}", [ProductsController::class, "toggleProductDiscounted"])->name("admin.products.toggleDis");
             Route::get("/get", [ProductsController::class, "get"])->name("admin.products.get");
             Route::get("/create", [ProductsController::class, "add"])->name("admin.products.add");
             Route::post("/create", [ProductsController::class, "create"])->name("admin.products.create");

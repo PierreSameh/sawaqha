@@ -261,5 +261,14 @@ class ProductsController extends Controller
             );
 
     }
+    public function toggleProductDiscounted($id) {
+        $product = Product::find($id);
+        if ($product) {
+            $product->isDiscounted = !$product->isDiscounted;
+            $product->save();
+        }
+
+        return redirect()->back();
+    }
 
 }

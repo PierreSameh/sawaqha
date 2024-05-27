@@ -9,6 +9,7 @@ use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\WishlistController;
 use App\Http\Controllers\User\OrdersController;
 use App\Http\Controllers\User\TransactionsController;
+use App\Http\Controllers\User\HomeEndpoints;
 
 // Users endpoints
 Route::post("/user/register", [AuthController::class, "register"]);
@@ -34,6 +35,7 @@ Route::get("/products/get-products-per-category-all", [ProductsController::class
 Route::get("/products/get-products-per-category-pagination", [ProductsController::class, "getProductsPerCategoryPagination"]);
 Route::get("/products/get-product-by-id", [ProductsController::class, "getProduct"]);
 Route::get("/products/get-most-selled", [ProductsController::class, "getMostSelled"]);
+Route::get("/products/get-discounted", [ProductsController::class, "getDiscounted"]);
 
 // Cart endpoints
 Route::post("/cart/put-product", [CartController::class, "addProductToCart"])->middleware('auth:sanctum');
@@ -58,4 +60,7 @@ Route::get("/orders/user/request/withdraw/get", [OrdersController::class, "getRe
 // Teansactions endpoints
 Route::get("/transactions/user/all", [TransactionsController::class, "transactionsAll"])->middleware('auth:sanctum');
 Route::get("/transactions/user/pagination", [TransactionsController::class, "transactionsPagination"])->middleware('auth:sanctum');
+
+// Home endpoints
+Route::get("/home/load-data", [HomeEndpoints::class, "getHomeApi"]);
 

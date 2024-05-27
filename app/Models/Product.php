@@ -17,6 +17,7 @@ class Product extends Model
         "price",
         "wholesale_price",
         "least_quantity_wholesale",
+        "isDiscounted",
         "category_id",
     ];
 

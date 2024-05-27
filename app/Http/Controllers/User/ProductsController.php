@@ -6,13 +6,49 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\HandleResponseTrait;
 use App\Models\Product;
+use App\Models\User;
 use App\Models\Order;
+use App\Models\Wishlist;
 use App\Models\Category;
 use Illuminate\Support\Facades\Validator;
-
+use Laravel\Sanctum\PersonalAccessToken;
 class ProductsController extends Controller
 {
     use HandleResponseTrait;
+
+    public function addIsFavKey($products, $authorization) {
+        $user = null;
+
+        $authorizationHeader = $authorization;
+
+        if ($authorizationHeader) {
+            try {
+                // Extract token from the header (assuming 'Bearer' prefix)
+                $hashedTooken = str_replace('Bearer ', '', $authorizationHeader);
+                $token = PersonalAccessToken::findToken($hashedTooken);
+                $user = $token->tokenable;
+
+            } catch (Exception $e) {
+                // Handle potential exceptions during token validation
+                // Log the error or return an appropriate response
+            }
+        }
+
+        if ($user) {
+            $user_id = $user->id;
+
+            // Add isFav key to each product
+            $products->each(function ($product) use ($user_id) {
+                $product->isFav = Wishlist::where('user_id', $user_id)->where('product_id', $product->id)->exists();
+            });
+        } else {
+            // Add isFav key to each product as false if not logged in
+            $products->each(function ($product) {
+                $product->isFav = false;
+            });
+        }
+        return $products;
+    }
 
     public function get(Request $request) {
         $per_page = $request->per_page ? $request->per_page : 10;
@@ -21,6 +57,8 @@ class ProductsController extends Controller
         $sortWay = $request->sort && $request->sort == "HP" ? "desc" : ( $request->sort && $request->sort  == "LP" ? "asc" : "desc");
 
         $products = Product::with("gallery")->orderBy($sortKey, $sortWay)->paginate($per_page);
+
+        $products = $this->addIsFavKey($products, $request->header('Authorization'));
 
         return $this->handleResponse(
             true,
@@ -52,6 +90,8 @@ class ProductsController extends Controller
         $sortWay = $request->sort && $request->sort == "HP" ? "desc" : ( $request->sort && $request->sort  == "LP" ? "asc" : "desc");
 
         $products = Product::with("gallery")->orderBy($sortKey, $sortWay)->get();
+
+        $products = $this->addIsFavKey($products, $request->header('Authorization'));
 
         return $this->handleResponse(
             true,
@@ -85,6 +125,8 @@ class ProductsController extends Controller
 
         $products = Product::where('name', 'like', '%' . $search . '%')
         ->orWhere('description', 'like', '%' . $search . '%')->orderBy($sortKey, $sortWay)->paginate($per_page);
+
+        $products = $this->addIsFavKey($products, $request->header('Authorization'));
 
         return $this->handleResponse(
             true,
@@ -134,6 +176,8 @@ class ProductsController extends Controller
             $sortWay = $request->sort && $request->sort == "HP" ? "desc" : ( $request->sort && $request->sort  == "LP" ? "asc" : "desc");
 
             $products = $category->products()->orderBy($sortKey, $sortWay)->get();
+
+            $products = $this->addIsFavKey($products, $request->header('Authorization'));
 
             return $this->handleResponse(
                 true,
@@ -192,6 +236,7 @@ class ProductsController extends Controller
 
             $products = $category->products()->orderBy($sortKey, $sortWay)->paginate($per_page);
 
+            $products = $this->addIsFavKey($products, $request->header('Authorization'));
             return $this->handleResponse(
                 true,
                 "عملية ناجحة",
@@ -262,13 +307,55 @@ class ProductsController extends Controller
         }
     }
 
-    public function getMostSelled() {
+    public function getMostSelled(Request $request) {
+        $per_page = $request->per_page ? $request->per_page : 10;
 
         $completedOrders = Order::with("products")->where("status", 4)->get();
-        return $topProducts = Product::
+        $topProducts = Product::
         withCount('orders') // Count occurrences of each product in orders
         ->orderBy('orders_count', 'desc') // Order by descending count
-        ->limit(10) // Limit to top 10 products (adjust as needed)
-        ->get();
+        ->paginate($per_page);
+
+        $topProducts = $this->addIsFavKey( $topProducts, $request->header('Authorization'));
+
+        return $this->handleResponse(
+            true,
+            "عملية ناجحة",
+            [],
+            [
+                $topProducts
+            ],
+            [
+                "parameters" => [
+                    "per_page" => "لتحديد عدد العناصر لكل صفحة",
+                    "page" => "لتحديد صفحة",
+                ],
+            ]
+        );
     }
+
+    public function getDiscounted(Request $request) {
+        $per_page = $request->per_page ? $request->per_page : 10;
+
+        $topProducts = Product::where("isDiscounted", true)
+        ->paginate($per_page);
+
+        $topProducts = $this->addIsFavKey( $topProducts, $request->header('Authorization'));
+
+        return $this->handleResponse(
+            true,
+            "عملية ناجحة",
+            [],
+            [
+                $topProducts
+            ],
+            [
+                "parameters" => [
+                    "per_page" => "لتحديد عدد العناصر لكل صفحة",
+                    "page" => "لتحديد صفحة",
+                ],
+            ]
+        );
+    }
+
 }
