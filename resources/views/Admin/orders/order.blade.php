@@ -17,15 +17,15 @@
         </div>
         <div class="form-group">
             <label>User Email</label>
-            <span class="form-control">{{ $order->user->email }}</span>
+            <span class="form-control">{{ $order->user ? $order->user->email : "Missing" }}</span>
         </div>
         <div class="form-group">
             <label>User Phone</label>
-            <span class="form-control">{{ $order->user->phone }}</span>
+            <span class="form-control">{{ $order->user ? $order->user->phone : "Missing" }}</span>
         </div>
         <div class="form-group">
             <label>User Type</label>
-            <span class="form-control">{{ $order->user->user_type == 1 ? "Markter" : ( $order->user->user_type == 2 ?  "Trader" : "Undifined") }}</span>
+            <span class="form-control">{{  $order->user ? ($order->user->user_type == 1 ? "Markter" : ( $order->user->user_type == 2 ?  "Trader" : "Undifined")) :  "Missing"}}</span>
         </div>
     </div>
     <hr>
