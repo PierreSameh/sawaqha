@@ -26,7 +26,7 @@ class ProductsController extends Controller
                 // Extract token from the header (assuming 'Bearer' prefix)
                 $hashedTooken = str_replace('Bearer ', '', $authorizationHeader);
                 $token = PersonalAccessToken::findToken($hashedTooken);
-                $user = $token->tokenable;
+                $user = $token?->tokenable;
 
             } catch (Exception $e) {
                 // Handle potential exceptions during token validation
