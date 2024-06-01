@@ -11,132 +11,128 @@ use App\Models\Product;
 use App\Models\Ordered_Product;
 use Illuminate\Support\Facades\Validator;
 use App\SendEmailTrait;
+use Illuminate\Support\Facades\DB;
 
 class OrdersController extends Controller
 {
     use HandleResponseTrait, SendEmailTrait;
 
     public function placeOrder(Request $request) {
-        $user = $request->user();
-        $cart = $user->cart()->get();
+        DB::beginTransaction();
 
-        // check if cart empty
-        if (!$cart || $cart->count() === 0)
-            return $this->handleResponse(
-                false,
-                "",
-                ["العربة فارغة قم بتعبئتها اولا"],
-                [],
-                ["لو المستخدم مسوق وليس تاجر فعليه ان يدخل سعر بيع الطلب"]
-            );
+        try {
 
-        // validate recipient info
-        $validator = Validator::make($request->all(), [
-            "recipient_name" => ["required"],
-            "recipient_phone" => ["required"],
-            "recipient_address" => ["required"],
-        ], [
-            "recipient_name.required" => "اسم المستلم مطلوب",
-            "recipient_phone.required" => "رقم هاتف المستلم مطلوب",
-            "recipient_address.required" => "عنوان المستلم مطلوب"
-        ]);
+            $user = $request->user();
+            $cart = $user->cart()->get();
 
-        if ($validator->fails()) {
-            return $this->handleResponse(
-                false,
-                "",
-                [$validator->errors()->first()],
-                [],
-                ["لو المستخدم مسوق وليس تاجر فعليه ان يدخل سعر بيع الطلب"]
-            );
-        }
+            // check if cart empty
+            if (!$cart || $cart->count() === 0)
+                return $this->handleResponse(
+                    false,
+                    "",
+                    ["العربة فارغة قم بتعبئتها اولا"],
+                    [],
+                    ["لو المستخدم مسوق وليس تاجر فعليه ان يدخل سعر بيع الطلب"]
+                );
 
-        $sub_total = 0;
-        // get cart sub total
-        if ($cart->count() > 0)
-            foreach ($cart as $item) {
-                $item_product = $item->product()->with(["gallery" => function ($q) {
-                    $q->take(1);
-                }])->first();
-                if ($item_product) :
-                    $item->total = (int) $item->quantity >= (int) $item_product->least_quantity_wholesale ? ((int) $item_product->wholesale_price * (int) $item->quantity) : ((int) $item_product->price * (int) $item->quantity);
-                    $sub_total += $item->total;
-                endif;
-                $item->dose_product_missing = $item_product ? false : true;
-                $item->product = $item_product ?? "This product is missing may deleted!";
-            }
-
-        // check if user is markter so ask for order sell price
-        if ($user->user_type == 1) {
-            $validator2 = Validator::make($request->all(), [
-                "total_sell_price" => ["required", "numeric"],
+            // validate recipient info
+            $validator = Validator::make($request->all(), [
+                "your_name" => ["required"],
+                "your_phone" => ["required"],
+                "recipient_governorate" => ["required"],
+                "recipient_address" => ["required"],
+                "recipient_name" => ["required", "string"],
+                "recipient_phone" => ["required"],
             ], [
-                "total_sell_price.required" => "من فضلك ادخل سعر بيع الطلب",
-                "total_sell_price.numeric" => "سعر بيع الطلب يجب ان يكون رقما"
+                "your_name.required" => "الاسم مطلوب",
+                "your_phone.required" => "رقم الهاتف مطلوب",
+                "recipient_governorate.required" => "محافظة المستلم مطلوبة",
+                "recipient_name.required" => "اسم المستلم مطلوب",
+                "recipient_phone.required" => "رقم هاتف المستلم مطلوب",
+                "recipient_address.required" => "عنوان المستلم مطلوب"
             ]);
 
-            if ($validator2->fails()) {
+            if ($validator->fails()) {
                 return $this->handleResponse(
                     false,
                     "",
-                    [$validator2->errors()->first()],
+                    [$validator->errors()->first()],
                     [],
                     ["لو المستخدم مسوق وليس تاجر فعليه ان يدخل سعر بيع الطلب"]
                 );
             }
 
-            // check if sell price if lower than the min sell price
-            if ($request->total_sell_price < $sub_total) {
-                return $this->handleResponse(
-                    false,
-                    "",
-                    ["لا يمكن بيع هذا الطلب اقل من " . $sub_total . " جنيها"],
-                    [],
-                    ["لو المستخدم مسوق وليس تاجر فعليه ان يدخل سعر بيع الطلب"]
-                );
+            $sub_total = 0;
+            // get cart sub total
+            if ($cart->count() > 0)
+                foreach ($cart as $item) {
+                    $item_product = $item->product()->with(["gallery" => function ($q) {
+                        $q->take(1);
+                    }])->first();
+                    if ($item_product) :
+                        $item->total = (int) $item->quantity >= (int) $item_product->least_quantity_wholesale ? ((int) $item_product->wholesale_price * (int) $item->quantity) : ((int) $item_product->price * (int) $item->quantity);
+                        $sub_total += $item->total;
+                    endif;
+                    $item->dose_product_missing = $item_product ? false : true;
+                    $item->product = $item_product ?? "This product is missing may deleted!";
+                }
+
+            // check if user is markter so ask for order sell price
+            if ($user->user_type == 1) {
+                $validator2 = Validator::make($request->all(), [
+                    "total_sell_price" => ["required", "numeric"],
+                ], [
+                    "total_sell_price.required" => "من فضلك ادخل سعر بيع الطلب",
+                    "total_sell_price.numeric" => "سعر بيع الطلب يجب ان يكون رقما"
+                ]);
+
+                if ($validator2->fails()) {
+                    return $this->handleResponse(
+                        false,
+                        "",
+                        [$validator2->errors()->first()],
+                        [],
+                        ["لو المستخدم مسوق وليس تاجر فعليه ان يدخل سعر بيع الطلب"]
+                    );
+                }
+
+                // check if sell price if lower than the min sell price
+                if ($request->total_sell_price < $sub_total) {
+                    return $this->handleResponse(
+                        false,
+                        "",
+                        ["لا يمكن بيع هذا الطلب اقل من " . $sub_total . " جنيها"],
+                        [],
+                        ["لو المستخدم مسوق وليس تاجر فعليه ان يدخل سعر بيع الطلب"]
+                    );
+                }
             }
-        }
 
-
-        // add user Expected profit
-        // if fail so order also fail
-        if ($user->user_type == 1) {
-            $user->expected_profit = (float) $user->expected_profit + ((float) $request->total_sell_price - (float) $sub_total);
-            $user->save();
-
-            if (!$user) {
-                return $this->handleResponse(
-                    false,
-                    "",
-                    ["فشل اكمال الطلب"],
-                    [],
-                    []
-                );
+            // add user Expected profit
+            // if fail so order also fail
+            if ($user->user_type == 1) {
+                $user->expected_profit = (float) $user->expected_profit + ((float) $request->total_sell_price - (float) $sub_total);
+                $user->save();
             }
-        }
 
-        $order = Order::create([
-            "recipient_name" => $request->recipient_name,
-            "recipient_phone" => $request->recipient_phone,
-            "recipient_address" => $request->recipient_address,
-            "sub_total" => $sub_total,
-            "total_sell_price" =>  $user->user_type == 1 ? $request->total_sell_price : $sub_total,
-            "user_type" => $user->user_type == 1 ? "مسوق" : "تاجر",
-            "user_id" => $user->id,
-            "status" => 1,
-        ]);
+            $order = Order::create([
+                "recipient_name"                => $request->recipient_name,
+                "recipient_phone"               => $request->recipient_phone,
+                "recipient_address"             => $request->recipient_address,
+                "sub_total"                     => $sub_total,
+                "total_sell_price"              => $user->user_type == 1 ? $request->total_sell_price : $sub_total,
+                "user_type"                     => $user->user_type == 1 ? "مسوق" : "تاجر",
+                "user_id"                       => $user->id,
+                "status"                        => 1,
+                "your_name"                     => $request->your_name,
+                "your_phone"                    => $request->your_phone,
+                "your_sec_phone"                => $request->your_sec_phone ?? null,
+                "recipient_governorate"         => $request->recipient_governorate,
+                "facebook"                      => $request->facebook,
+                "web_page"                      => $request->web_page,
+                "notes"                         => $request->notes,
+            ]);
 
-        if (!$order) {
-            $user->expected_profit = (float) $user->expected_profit - (float) $request->total_sell_price;
-            $user->save();
-            return $this->handleResponse(
-                false,
-                "",
-                ["فشل اكمال الطلب"],
-                [],
-                []
-            );
-        }else {
             foreach ($cart as $item) {
                 if (!$item->dose_product_missing) {
                     $record_product = Ordered_Product::create([
@@ -154,64 +150,55 @@ class OrdersController extends Controller
                 $item->delete();
             }
 
-            if (!$order) {
-                $user->expected_profit = (float) $user->expected_profit - (float) $request->total_sell_price;
-                $user->save();
-                return $this->handleResponse(
-                    false,
-                    "",
-                    ["فشل اكمال الطلب"],
-                    [],
-                    []
-                );
+            if ($order) {
+                $msg_content = "<h1>";
+                $msg_content = " طلب جديد بواسطة" . $user->name;
+                $msg_content .= "</h1>";
+                $msg_content .= "<br>";
+                $msg_content .= "<h3>";
+                $msg_content .= "تفاصيل الطلب: ";
+                $msg_content .= "</h3>";
+
+                $msg_content .= "<h4>";
+                $msg_content .= "اسم المستلم: ";
+                $msg_content .= $order->recipient_name;
+                $msg_content .= "</h4>";
+
+
+                $msg_content .= "<h4>";
+                $msg_content .= "رقم هاتف المستلم: ";
+                $msg_content .= $order->recipient_phone;
+                $msg_content .= "</h4>";
+
+
+                $msg_content .= "<h4>";
+                $msg_content .= "عنوان المستلم: ";
+                $msg_content .= $order->recipient_address;
+                $msg_content .= "</h4>";
+
+
+                $msg_content .= "<h4>";
+                $msg_content .= "الاجمالي : ";
+                $msg_content .= $order->sub_total;
+                $msg_content .= "</h4>";
+
+
+                $msg_content .= "<h4>";
+                $msg_content .= "سعر البيع : ";
+                $msg_content .= $order->total_sell_price;
+                $msg_content .= "</h4>";
+
+
+                $msg_content .= "<h4>";
+                $msg_content .= "نوع حساب الطالب : ";
+                $msg_content .= $order->user_type;
+                $msg_content .= "</h4>";
+
+                $this->sendEmail("kotbekareem74@gmail.com", "طلب جديد", $msg_content);
+
             }
-        }
 
-        if ($order) {
-            $msg_content = "<h1>";
-            $msg_content = " طلب جديد بواسطة" . $user->name;
-            $msg_content .= "</h1>";
-            $msg_content .= "<br>";
-            $msg_content .= "<h3>";
-            $msg_content .= "تفاصيل الطلب: ";
-            $msg_content .= "</h3>";
-
-            $msg_content .= "<h4>";
-            $msg_content .= "اسم المستلم: ";
-            $msg_content .= $order->recipient_name;
-            $msg_content .= "</h4>";
-
-
-            $msg_content .= "<h4>";
-            $msg_content .= "رقم هاتف المستلم: ";
-            $msg_content .= $order->recipient_phone;
-            $msg_content .= "</h4>";
-
-
-            $msg_content .= "<h4>";
-            $msg_content .= "عنوان المستلم: ";
-            $msg_content .= $order->recipient_address;
-            $msg_content .= "</h4>";
-
-
-            $msg_content .= "<h4>";
-            $msg_content .= "الاجمالي : ";
-            $msg_content .= $order->sub_total;
-            $msg_content .= "</h4>";
-
-
-            $msg_content .= "<h4>";
-            $msg_content .= "سعر البيع : ";
-            $msg_content .= $order->total_sell_price;
-            $msg_content .= "</h4>";
-
-
-            $msg_content .= "<h4>";
-            $msg_content .= "نوع حساب الطالب : ";
-            $msg_content .= $order->user_type;
-            $msg_content .= "</h4>";
-
-            $this->sendEmail("kotbekareem74@gmail.com", "طلب جديد", $msg_content);
+            DB::commit();
 
             return $this->handleResponse(
                 true,
@@ -220,6 +207,17 @@ class OrdersController extends Controller
                 [
                     $order
                 ],
+                []
+            );
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return $this->handleResponse(
+                false,
+                "فشل اكمال الطلب",
+                [$e->getMessage()],
+                [],
                 []
             );
         }

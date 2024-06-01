@@ -123,7 +123,7 @@ class ProductsController extends Controller
         $sortWay = $request->sort && $request->sort == "HP" ? "desc" : ( $request->sort && $request->sort  == "LP" ? "asc" : "desc");
         $search = $request->search ? $request->search : '';
 
-        $products = Product::where('name', 'like', '%' . $search . '%')
+        $products = Product::with("gallery")->where('name', 'like', '%' . $search . '%')
         ->orWhere('description', 'like', '%' . $search . '%')->orderBy($sortKey, $sortWay)->paginate($per_page);
 
         $products = $this->addIsFavKey($products, $request->header('Authorization'));
