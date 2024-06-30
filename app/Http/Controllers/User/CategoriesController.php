@@ -12,7 +12,7 @@ class CategoriesController extends Controller
     use HandleResponseTrait;
 
     public function get() {
-        $categories = Category::latest()->get();
+        $categories = Category::where("isMainCat", true)->latest()->get();
 
         return $this->handleResponse(
             true,
