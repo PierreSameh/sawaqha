@@ -25,6 +25,7 @@ Route::get('/user/logout', [AuthController::class, "logout"])->middleware('auth:
 
 // Categories endpoints
 Route::get("/categories/get", [CategoriesController::class, 'get']);
+Route::get("/categories/sub-categories", [CategoriesController::class, 'sub_categories']);
 Route::post("/categories/search", [CategoriesController::class, 'search']);
 
 // Products endpoints

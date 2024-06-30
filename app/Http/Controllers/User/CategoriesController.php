@@ -25,6 +25,20 @@ class CategoriesController extends Controller
         );
     }
 
+    public function sub_categories() {
+        $categories = Category::latest()->get();
+        $sub_categories = $categories->sub_categories()->get();
+        return $this->handleResponse(
+            true,
+            "عملية ناجحة",
+            [],
+            [
+                $sub_categories
+            ],
+            []
+        );
+    }
+
     public function search(Request $request) {
         $search = $request->search ? $request->search : '';
         $categories = Category::latest()->where('name', 'like', '%' . $search . '%')
