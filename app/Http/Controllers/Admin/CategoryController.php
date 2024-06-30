@@ -57,6 +57,8 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), [
             "name" => ["required", "max:100"],
             "description" => ["required"],
+            "category_type" => ["required"],
+            "parent_category_id" => ["required_if:category_type,2"],
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ], [
             "name.required" => "ادخل اسم القسم",
@@ -84,6 +86,8 @@ class CategoryController extends Controller
         $category = Category::create([
             "name" => $request->name,
             "description" => $request->description,
+            "isMainCat" => $request->category_type == 1,
+            "category_id" => $request->parent_category_id ?? null,
             "thumbnail_path" => '/images/uploads/Categories/' . $image,
         ]);
 
@@ -103,6 +107,9 @@ class CategoryController extends Controller
             "id" => ["required"],
             "name" => ["required", "max:100"],
             "description" => ["required"],
+            "category_type" => ["required"],
+            "parent_category_id" => ["required_if:category_type,2"],
+
             'thumbnail' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ], [
             "name.required" => "ادخل اسم القسم",
@@ -134,6 +141,9 @@ class CategoryController extends Controller
 
         $category->name = $request->name;
         $category->description = $request->description;
+        $category->isMainCat = $request->category_type == 1;
+        $category->category_id = $request->parent_category_id ?? null;
+
         $category->save();
 
         if ($category)

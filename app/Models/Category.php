@@ -10,6 +10,8 @@ class Category extends Model
     use HasFactory;
     protected $fillable = [
         "name",
+        "category_id",
+        "isMainCat",
         "description",
         "thumbnail_path",
     ];

@@ -19,8 +19,28 @@
             </div>
             <div class="form-group">
                 <label for="Description" class="form-label">Description</label>
-                <textarea rows="5" class="form-control" id="Description"  placeholder="Description Name" style="resize: none" v-model="description">
+                <textarea rows="4" class="form-control" id="Description"  placeholder="Description Name" style="resize: none" v-model="description">
                 </textarea>
+            </div>
+            <div class="d-flex justify-content-between" style="gap: 16px">
+                <div class="form-group w-50">
+                    <label for="name" class="form-label">Category type</label>
+                    <select name="isMian" id="isMain" class="form-control" v-model="category_type">
+                        <option value="1">Main Category</option>
+                        <option value="2">Sub Category</option>
+                    </select>
+                </div>
+                @php
+                    $categories = App\Models\Category::where("isMainCat", true)->get();
+                @endphp
+                <div class="form-group w-50" v-if="category_type == 2">
+                    <label for="name" class="form-label">Choose main category</label>
+                    <select name="isMian" id="isMain" class="form-control" v-model="parent_category_id">
+                        @foreach ($categories as $item)
+                            <option value="{{$item->id}}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
         <div class="form-group pt-4 pb-4" style="width: max-content; height: 300px;min-width: 250px">
@@ -55,6 +75,8 @@ createApp({
         return {
             name: null,
             description: null,
+            category_type: null,
+            parent_category_id: null,
             thumbnail_path: null,
             thumbnail: null
         }
@@ -71,6 +93,8 @@ createApp({
                     name: this.name,
                     description: this.description,
                     thumbnail: this.thumbnail,
+                    category_type: this.category_type,
+                    parent_category_id: this.parent_category_id,
                 },
                 {
                     headers: {
