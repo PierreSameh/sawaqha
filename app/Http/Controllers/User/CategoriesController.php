@@ -25,15 +25,25 @@ class CategoriesController extends Controller
         );
     }
 
-    public function sub_categories() {
-        $categories = Category::latest()->get();
-        $sub_categories = $categories->sub_categories()->get();
+    public function sub_categories(Request $request) {
+        $categories = Category::find($request->category_id);
+        if ($categories) {
+            $sub_categories = $categories->sub_categories()->get();
+            return $this->handleResponse(
+                true,
+                "عملية ناجحة",
+                [],
+                [
+                    $sub_categories
+                ],
+                []
+            );
+        }
         return $this->handleResponse(
-            true,
-            "عملية ناجحة",
+            false,
+            "invalid id",
             [],
             [
-                $sub_categories
             ],
             []
         );
