@@ -73,7 +73,8 @@ class HomeEndpoints extends Controller
 
         $completedOrders = Order::with("products")->where("status", 4)->get();
         $topProducts = Product::
-        withCount('orders')
+        with("gallery")
+        ->withCount('orders')
         ->orderBy('orders_count', 'desc')
         ->limit(10)
         ->get();
@@ -85,6 +86,7 @@ class HomeEndpoints extends Controller
     public function getDiscountedProducts($token) {
 
         $discountedProducts = Product::
+        with("gallery")->
         where("isDiscounted", true)
         ->limit(10)
         ->get();
