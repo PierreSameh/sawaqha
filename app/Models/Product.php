@@ -35,5 +35,13 @@ class Product extends Model
         return $this->hasMany('App\Models\Ordered_Product', 'product_id');
     }
 
+    public function sizes()
+    {
+        return $this->hasMany('App\Models\Size', 'product_id');
+    }
 
+    public function colors()
+    {
+        return $this->hasMany('App\Models\Color', 'product_id');
+    }
 }

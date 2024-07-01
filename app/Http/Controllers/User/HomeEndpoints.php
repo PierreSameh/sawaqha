@@ -11,8 +11,12 @@ use App\Models\Order;
 use App\Models\Wishlist;
 use App\Models\Category;
 use App\Models\Banner;
+use Exception;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\PersonalAccessToken;
+use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpFoundation\Response;
+
 class HomeEndpoints extends Controller
 {
     use HandleResponseTrait;
@@ -104,5 +108,43 @@ class HomeEndpoints extends Controller
             ],
             []
         );
+    }
+
+    public function downloadImage(Request $request)
+    {
+        $url = $request->query('url');
+
+        if (!$url) {
+            return response()->json(['error' => 'URL is required'], Response::HTTP_BAD_REQUEST);
+        }
+
+        try {
+            $response = Http::get($url);
+
+            if ($response->successful()) {
+                $content = $response->body();
+                $contentType = $response->header('Content-Type');
+
+                return response($content, Response::HTTP_OK)
+                    ->header('Content-Type', $contentType)
+                    ->header('Content-Disposition', 'attachment; filename="downloaded_image.' . $this->getExtension($contentType) . '"');
+            } else {
+                return response()->json(['error' => 'Failed to download image'], Response::HTTP_BAD_REQUEST);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private function getExtension($contentType)
+    {
+        $mimeTypes = [
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/gif' => 'gif',
+            // Add more MIME types as needed
+        ];
+
+        return $mimeTypes[$contentType] ?? 'jpg';
     }
 }

@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use App\HandleResponseTrait;
 use App\SaveImageTrait;
 use App\DeleteImageTrait;
+use App\Models\Color;
 use App\Models\Product;
 use App\Models\Gallery;
+use App\Models\Size;
 use Illuminate\Support\Facades\Validator;
 
 class ProductsController extends Controller
@@ -24,7 +26,7 @@ class ProductsController extends Controller
     }
 
     public function edit($id) {
-        $product = Product::with("gallery")->latest()->find($id);
+        $product = Product::with("gallery", "colors", "sizes")->latest()->find($id);
 
         if ($product)
             return view("Admin.products.edit")->with(compact("product"));
@@ -105,6 +107,24 @@ class ProductsController extends Controller
             }
         }
 
+        if ($request->sizes && $product) {
+            foreach ($request->sizes as $option) {
+                $option = Size::create([
+                    "product_id" => $product->id,
+                    "size" => $option["size"] ?? null,
+                ]);
+            }
+        }
+
+        if ($request->colors && $product) {
+            foreach ($request->colors as $option) {
+                $option = Color::create([
+                    "product_id" => $product->id,
+                    "color" => $option["color"] ?? null,
+                    "code" => $option["code"] ?? null,
+                ]);
+            }
+        }
 
         if ($product)
             return $this->handleResponse(
@@ -193,6 +213,32 @@ class ProductsController extends Controller
                 ]);
             }
         }
+        foreach ( $product->sizes as $option) {
+            $option->delete();
+        }
+
+        if ($request->sizes && $product) {
+            foreach ($request->sizes as $option) {
+                $option = Size::create([
+                    "product_id" => $product->id,
+                    "size" => $option["size"] ?? null,
+                ]);
+            }
+        }
+        foreach ( $product->colors as $option) {
+            $option->delete();
+        }
+
+        if ($request->colors && $product) {
+            foreach ($request->colors as $option) {
+                $option = Color::create([
+                    "product_id" => $product->id,
+                    "color" => $option["color"] ?? null,
+                    "code" => $option["code"] ?? null,
+                ]);
+            }
+        }
+
 
         $product->save();
 

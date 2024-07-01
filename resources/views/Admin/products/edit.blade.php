@@ -118,6 +118,54 @@
            </div>
         </div>
      </div>
+     <div class="d-flex justify-content-between mb-4">
+        <h2>Does this product has sizes?</h2>
+        <button class="btn btn-primary" @click="handleAddSize">Add Sizes</button>
+     </div>
+    <table class="table" v-if="sizes && sizes.length > 0">
+        <thead>
+          <tr>
+            <th scope="col">Size</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="option, index in sizes" :key="index">
+            <td>
+                <input type="text" name="size" id="size" class="form-control" placeholder="Size" v-model="sizes[index]['size']">
+            </td>
+            <td>
+                <button class="btn btn-danger" @click="handleRemoveSize(index)">Remove</button>
+            </td>
+          </tr>
+        </tbody>
+    </table>
+     <div class="d-flex justify-content-between mb-4">
+        <h2>Does this product has colors?</h2>
+        <button class="btn btn-primary" @click="handleAddColor">Add Color</button>
+     </div>
+     <table class="table" v-if="colors && colors.length > 0">
+        <thead>
+          <tr>
+            <th scope="col">Color name</th>
+            <th scope="col">Color code</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="option, index in colors" :key="index">
+            <td>
+                <input type="text" name="size" id="size" class="form-control" placeholder="Color Name" v-model="colors[index]['color']">
+            </td>
+            <td>
+                <input type="color" name="color" id="color" class="form-control" placeholder="Color" v-model="colors[index]['code']">
+            </td>
+            <td>
+                <button class="btn btn-danger" @click="handleRemoveColor(index)">Remove</button>
+            </td>
+          </tr>
+        </tbody>
+    </table>
 
     <div class="form-group">
         <button class="btn btn-success w-25" @click="update" style="display: block;margin: auto">Update</button>
@@ -146,11 +194,30 @@ createApp({
             gallery: @json($product->gallery),
             categories: @json($categories),
             deletedGallery: [],
+            sizes: @json($product->sizes),
+            colors: @json($product->colors),
             images_path: [],
             images: []
         }
     },
     methods: {
+        handleAddSize() {
+            this.sizes.push({
+                size: "",
+            })
+        },
+        handleRemoveSize(index) {
+            this.sizes.splice(index, 1)
+        },
+        handleAddColor() {
+            this.colors.push({
+                color: "",
+                code: "",
+            })
+        },
+        handleRemoveColor(index) {
+            this.colors.splice(index, 1)
+        },
         handleChangeThumbnail(event) {
             this.thumbnail = event.target.files[0]
             this.thumbnail_path = URL.createObjectURL(event.target.files[0])
@@ -193,6 +260,8 @@ createApp({
                     deleted_gallery: this.deletedGallery,
                     category_id: this.category_id,
                     main_image: this.thumbnail,
+                    sizes: this.sizes,
+                    colors: this.colors,
                 },
                 {
                     headers: {

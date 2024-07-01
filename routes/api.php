@@ -64,4 +64,5 @@ Route::get("/transactions/user/pagination", [TransactionsController::class, "tra
 
 // Home endpoints
 Route::get("/home/load-data", [HomeEndpoints::class, "getHomeApi"]);
+Route::get('/download-image', [HomeEndpoints::class, 'downloadImage']);
 

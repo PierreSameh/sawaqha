@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Wishlist;
 use App\Models\Category;
+use Exception;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\PersonalAccessToken;
 class ProductsController extends Controller
@@ -56,7 +57,7 @@ class ProductsController extends Controller
         $sortKey =($request->sort && $request->sort == "HP") || ( $request->sort && $request->sort == "LP") ? "price" :"created_at";
         $sortWay = $request->sort && $request->sort == "HP" ? "desc" : ( $request->sort && $request->sort  == "LP" ? "asc" : "desc");
 
-        $products = Product::with("gallery")->orderBy($sortKey, $sortWay)->paginate($per_page);
+        $products = Product::with("gallery", "colors", "sizes")->orderBy($sortKey, $sortWay)->paginate($per_page);
 
         $products = $this->addIsFavKey($products, $request->header('Authorization'));
 
@@ -89,7 +90,7 @@ class ProductsController extends Controller
         $sortKey =($request->sort && $request->sort == "HP") || ( $request->sort && $request->sort == "LP") ? "price" :"created_at";
         $sortWay = $request->sort && $request->sort == "HP" ? "desc" : ( $request->sort && $request->sort  == "LP" ? "asc" : "desc");
 
-        $products = Product::with("gallery")->orderBy($sortKey, $sortWay)->get();
+        $products = Product::with("gallery", "colors", "sizes")->orderBy($sortKey, $sortWay)->get();
 
         $products = $this->addIsFavKey($products, $request->header('Authorization'));
 
@@ -123,7 +124,7 @@ class ProductsController extends Controller
         $sortWay = $request->sort && $request->sort == "HP" ? "desc" : ( $request->sort && $request->sort  == "LP" ? "asc" : "desc");
         $search = $request->search ? $request->search : '';
 
-        $products = Product::with("gallery")->where('name', 'like', '%' . $search . '%')
+        $products = Product::with("gallery", "colors", "sizes")->where('name', 'like', '%' . $search . '%')
         ->orWhere('description', 'like', '%' . $search . '%')->orderBy($sortKey, $sortWay)->paginate($per_page);
 
         $products = $this->addIsFavKey($products, $request->header('Authorization'));
@@ -284,7 +285,7 @@ class ProductsController extends Controller
             );
         }
 
-        $product = Product::with("gallery")->find($request->product_id);
+        $product = Product::with("gallery", "colors", "sizes")->find($request->product_id);
 
         if ($product) {
             return $this->handleResponse(
