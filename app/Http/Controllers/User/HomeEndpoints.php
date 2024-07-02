@@ -56,7 +56,7 @@ class HomeEndpoints extends Controller
     }
 
     public function getCategories() {
-        return $categories = Category::limit(10)->get();
+        return $categories = Category::where("isMainCat", true)->limit(10)->get();
     }
 
     public function getLatestBanners() {
