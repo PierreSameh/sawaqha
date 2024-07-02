@@ -120,8 +120,8 @@ class ProductsController extends Controller
             foreach ($request->colors as $option) {
                 $option = Color::create([
                     "product_id" => $product->id,
-                    "color" => $option["color"] ?? null,
-                    "code" => $option["code"] ?? null,
+                    "color" => $option["color"] ?? "black",
+                    "code" => $option["code"] ?? "#000000",
                 ]);
             }
         }
@@ -233,8 +233,8 @@ class ProductsController extends Controller
             foreach ($request->colors as $option) {
                 $option = Color::create([
                     "product_id" => $product->id,
-                    "color" => $option["color"] ?? null,
-                    "code" => $option["code"] ?? null,
+                    "color" => $option["color"] ?? "black",
+                    "code" => $option["code"] ?? "#000000",
                 ]);
             }
         }
