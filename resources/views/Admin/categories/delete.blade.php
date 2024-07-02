@@ -58,7 +58,7 @@ createApp({
         return {
             id: '{{ $category->id }}',
             name: '{{ $category->name }}',
-            description: @json($category->description)',
+            description: @json($category->description),
             thumbnail: null,
             thumbnail_path: '{{ $category->thumbnail_path }}',
         }
