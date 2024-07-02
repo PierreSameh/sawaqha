@@ -64,7 +64,7 @@ class HomeEndpoints extends Controller
     }
 
     public function getLatestProducts($token) {
-        $products = Product::latest()->with("gallery")->limit(15)->get();
+        $products = Product::latest()->with("gallery", "colors", "sizes")->limit(15)->get();
 
         return $products = $this->addIsFavKey($products, $token);
     }
@@ -73,7 +73,7 @@ class HomeEndpoints extends Controller
 
         $completedOrders = Order::with("products")->where("status", 4)->get();
         $topProducts = Product::
-        with("gallery")
+        with("gallery", "colors", "sizes")
         ->withCount('orders')
         ->orderBy('orders_count', 'desc')
         ->limit(10)
@@ -86,7 +86,7 @@ class HomeEndpoints extends Controller
     public function getDiscountedProducts($token) {
 
         $discountedProducts = Product::
-        with("gallery")->
+        with("gallery", "colors", "sizes")->
         where("isDiscounted", true)
         ->limit(10)
         ->get();
