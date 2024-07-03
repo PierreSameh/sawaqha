@@ -170,7 +170,9 @@ class ProductsController extends Controller
             );
         }
 
-        $category = Category::with("products")->find($request->category_id);
+        $category = Category::with(["products" => function ($q) {
+            $q->with("gallery", "colors", "sizes");
+        }])->find($request->category_id);
 
         if ($category) {
             $sortKey = ($request->sort && $request->sort == "HP") || ( $request->sort && $request->sort == "LP") ? "price" :"created_at";
@@ -227,7 +229,9 @@ class ProductsController extends Controller
             );
         }
 
-        $category = Category::with("products")->find($request->category_id);
+        $category = Category::with(["products" => function($q) {
+            $q->with("gallery", "colors", "sizes");
+        }])->find($request->category_id);
 
         if ($category) {
             $per_page = $request->per_page ? $request->per_page : 10;
