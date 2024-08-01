@@ -37,15 +37,11 @@ class OrdersController extends Controller
 
             // validate recipient info
             $validator = Validator::make($request->all(), [
-                "your_name" => ["required"],
-                "your_phone" => ["required"],
                 "recipient_governorate" => ["required"],
                 "recipient_address" => ["required"],
                 "recipient_name" => ["required", "string"],
                 "recipient_phone" => ["required"],
             ], [
-                "your_name.required" => "الاسم مطلوب",
-                "your_phone.required" => "رقم الهاتف مطلوب",
                 "recipient_governorate.required" => "محافظة المستلم مطلوبة",
                 "recipient_name.required" => "اسم المستلم مطلوب",
                 "recipient_phone.required" => "رقم هاتف المستلم مطلوب",
@@ -124,12 +120,7 @@ class OrdersController extends Controller
                 "user_type"                     => $user->user_type == 1 ? "مسوق" : "تاجر",
                 "user_id"                       => $user->id,
                 "status"                        => 1,
-                "your_name"                     => $request->your_name,
-                "your_phone"                    => $request->your_phone,
-                "your_sec_phone"                => $request->your_sec_phone ?? null,
                 "recipient_governorate"         => $request->recipient_governorate,
-                "facebook"                      => $request->facebook,
-                "web_page"                      => $request->web_page,
                 "notes"                         => $request->notes,
             ]);
 
