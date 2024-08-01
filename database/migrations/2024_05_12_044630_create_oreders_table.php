@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('recipient_name');
             $table->string('recipient_phone');
             $table->text('recipient_address');
-            $table->float('total_sell_price');
+            $table->float('sub_total');
             $table->string('user_type');
             $table->boolean('status');
             $table->integer('user_id');

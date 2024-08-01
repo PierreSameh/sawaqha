@@ -215,6 +215,60 @@ class CartController extends Controller
 
     }
 
+
+    public function updateProductPriceAtCart(Request $request){
+        $validator = Validator::make($request->all(), [
+            "product_id" => ["required"],
+            "sell_price" => ["numeric"],
+        ]);
+
+        if ($validator->fails()) {
+            return $this->handleResponse(
+                false,
+                "",
+                [$validator->errors()->first()],
+                [],
+                []
+            );
+        }
+
+        $product = Product::find($request->product_id);
+        $sellPrice = $request->sell_price;
+
+        if ($product) {
+            $user = $request->user();
+            $product_if_in_user_cart = $user->cart()->where("product_id", $request->product_id)->first();
+            if ($product_if_in_user_cart) {
+                $product_if_in_user_cart->sell_price = $sellPrice;
+                $product_if_in_user_cart->save();
+
+                    return $this->handleResponse(
+                        true,
+                        "تم تحديث سعر البيع بنجاح",
+                        [],
+                        [],
+                        []
+                    );
+            } else {
+                return $this->handleResponse(
+                    false,
+                    "",
+                    ["هذا المنتج غير متاح لديك في العربة"],
+                    [],
+                    []
+                );
+            }
+        } else {
+            return $this->handleResponse(
+                false,
+                "",
+                ["هذا المنتج غير متاح"],
+                [],
+                []
+            );
+        }
+    }
+
     public function getCartDetails(Request $request) {
         $user = $request->user();
         $cart = $user->cart()->get();
@@ -226,9 +280,13 @@ class CartController extends Controller
                     $q->take(1);
                 }])->first();
                 if ($item_product) :
-                    $item->total = (int) $item->quantity >= (int) $item_product->least_quantity_wholesale ? ((int) $item_product->wholesale_price * (int) $item->quantity) : ((int) $item_product->price * (int) $item->quantity);
-                    $sub_total += $item->total;
-                endif;
+                    if (isset($item->sell_price)) {
+                        $itemTotal = $item->sell_price * $item->quantity;
+                        $sub_total += $itemTotal;
+                    } 
+                        $item->total = (int) $item->quantity >= (int) $item_product->least_quantity_wholesale ? ((int) $item_product->wholesale_price * (int) $item->quantity) : ((int) $item_product->price * (int) $item->quantity);
+                        $sub_total += $item->total;
+                    endif;
                 $item->dose_product_missing = $item_product ? false : true;
                 $item->product = $item_product ?? "This product is missing may deleted!";
             }

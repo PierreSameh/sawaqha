@@ -42,6 +42,7 @@ Route::get("/products/get-discounted", [ProductsController::class, "getDiscounte
 Route::post("/cart/put-product", [CartController::class, "addProductToCart"])->middleware('auth:sanctum');
 Route::post("/cart/remove-product", [CartController::class, "removeProductFromCart"])->middleware('auth:sanctum');
 Route::post("/cart/update-product-quantity", [CartController::class, "updateProductQuantityAtCart"])->middleware('auth:sanctum');
+Route::post("/cart/update-product-sell-price", [CartController::class, "updateProductPriceAtCart"])->middleware('auth:sanctum');
 Route::get("/cart/get", [CartController::class, "getCartDetails"])->middleware('auth:sanctum');
 
 // Wishlist endpoints
