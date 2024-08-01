@@ -66,6 +66,10 @@ class OrdersController extends Controller
                         $q->take(1);
                     }])->first();
                     if ($item_product) :
+                    if (isset($item->sell_price)) {
+                        $itemTotal = $item->sell_price * $item->quantity;
+                        $sub_total += $itemTotal;
+                    } 
                         $item->total = (int) $item->quantity >= (int) $item_product->least_quantity_wholesale ? ((int) $item_product->wholesale_price * (int) $item->quantity) : ((int) $item_product->price * (int) $item->quantity);
                         $sub_total += $item->total;
                     endif;
