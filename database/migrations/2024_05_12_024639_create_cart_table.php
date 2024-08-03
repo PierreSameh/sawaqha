@@ -17,6 +17,8 @@ return new class extends Migration
             $table->integer('product_id');
             $table->integer('quantity');
             $table->float('sell_price')->nullable();
+            $table->string('color')->nullable();
+            $table->string('size')->nullable();
         });
     }
 
