@@ -13,6 +13,8 @@ use App\Models\Category;
 use Exception;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\PersonalAccessToken;
+use App\Models\Size;
+use App\Models\Color;
 class ProductsController extends Controller
 {
     use HandleResponseTrait;
@@ -181,13 +183,21 @@ class ProductsController extends Controller
             $products = $category->products()->orderBy($sortKey, $sortWay)->get();
 
             $products = $this->addIsFavKey($products, $request->header('Authorization'));
+            $colors = [];
+            $sizes = [];
+            foreach ($products as $product) {
+                $colors[] = Color::where('product_id', $product->id)->get();
+                $sizes[] = Size::where('product_id', $product->id)->get();
+            }
 
             return $this->handleResponse(
                 true,
                 "عملية ناجحة",
                 [],
                 [
-                    $products
+                    $products,
+                    $colors,
+                    $sizes
                 ],
                 [
                     "parameters" => [

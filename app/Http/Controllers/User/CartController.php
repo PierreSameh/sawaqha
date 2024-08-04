@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\HandleResponseTrait;
 use App\Models\Product;
 use App\Models\Cart;
+use App\Models\Color;
+use App\Models\Size;
 use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
@@ -33,6 +35,8 @@ class CartController extends Controller
 
         $product = Product::find($request->product_id);
         $quantity = $request->quantity ? $request->quantity : 1;
+        $colors = Color::where("product_id", $product->id)->get();
+        $sizes = Size::where("product_id", $product->id)->get();
 
         if ($product) {
             $user = $request->user();
@@ -46,9 +50,16 @@ class CartController extends Controller
                         [],
                         [],
                         [
-                            "في حالة كان المنتج موجود في عربة المستخم فالكمية تزداد بواحد او بالعدد المرسل من المستخدم في ال quantity"
+                            "في حالة كان المنتج موجود في عربة المستخم فالكمية تزداد بواحد او بالعدد المرسل من المستخدم في ال quantity",
+                            "اذا كان المنتج يحتوي على صور أو احجام ارسل البيانات مع المنتج"
                         ]
                     );
+                if (isset($colors)) {
+                    $product_if_in_user_cart->color = $request->color;
+                }
+                if (isset($sizes)) {
+                    $product_if_in_user_cart->size = $request->size;
+                }
 
                 $product_if_in_user_cart->quantity = $prod_quantity;
                 $product_if_in_user_cart->save();
@@ -60,7 +71,9 @@ class CartController extends Controller
                         [],
                         [],
                         [
-                            "في حالة كان المنتج موجود في عربة المستخم فالكمية تزداد بواحد او بالعدد المرسل من المستخدم في ال quantity"
+                            "في حالة كان المنتج موجود في عربة المستخم فالكمية تزداد بواحد او بالعدد المرسل من المستخدم في ال quantity",
+                            "اذا كان المنتج يحتوي على صور أو احجام ارسل البيانات مع المنتج"
+
                         ]
                     );
             } else {
@@ -71,7 +84,9 @@ class CartController extends Controller
                         [],
                         [],
                         [
-                            "في حالة كان المنتج موجود في عربة المستخم فالكمية تزداد بواحد او بالعدد المرسل من المستخدم في ال quantity"
+                            "في حالة كان المنتج موجود في عربة المستخم فالكمية تزداد بواحد او بالعدد المرسل من المستخدم في ال quantity",
+                            "اذا كان المنتج يحتوي على صور أو احجام ارسل البيانات مع المنتج"
+
                         ]
                     );
 
