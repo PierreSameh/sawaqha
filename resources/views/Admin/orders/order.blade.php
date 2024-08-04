@@ -61,10 +61,6 @@
             <label>Sub Total</label>
             <span class="form-control">{{ $order->sub_total }}</span>
         </div>
-        <div class="form-group">
-            <label>Sell Price</label>
-            <span class="form-control">{{ $order->total_sell_price }}</span>
-        </div>
     </div>
     <hr>
     <h2>Order Products:</h2>
