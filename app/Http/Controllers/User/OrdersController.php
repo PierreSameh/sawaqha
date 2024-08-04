@@ -103,6 +103,8 @@ class OrdersController extends Controller
                         "order_id" => $order->id,
                         "product_id" => $item["product_id"],
                         "price_in_order" => $item["product"]["price"],
+                        "size" => $item["size"],
+                        "color" => $item["color"],
                         "ordered_quantity" => $item["quantity"],
                     ]);
                 }

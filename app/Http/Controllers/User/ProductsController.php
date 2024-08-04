@@ -183,12 +183,14 @@ class ProductsController extends Controller
             $products = $category->products()->orderBy($sortKey, $sortWay)->get();
 
             $products = $this->addIsFavKey($products, $request->header('Authorization'));
-            $colors = [];
-            $sizes = [];
+
             foreach ($products as $product) {
-                $colors[] = Color::where('product_id', $product->id)->get();
-                $sizes[] = Size::where('product_id', $product->id)->get();
+                $colors = Color::where('product_id', $product->id)->get();
+                $product->colors = $colors;
+                $sizes = Size::where('product_id', $product->id)->get();
+                $product->sizes = $sizes;
             }
+
 
             return $this->handleResponse(
                 true,
@@ -196,8 +198,6 @@ class ProductsController extends Controller
                 [],
                 [
                     $products,
-                    $colors,
-                    $sizes
                 ],
                 [
                     "parameters" => [

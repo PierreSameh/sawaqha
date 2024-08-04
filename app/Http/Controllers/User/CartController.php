@@ -35,6 +35,8 @@ class CartController extends Controller
 
         $product = Product::find($request->product_id);
         $quantity = $request->quantity ? $request->quantity : 1;
+        $color = $request->input('color', null);
+        $size = $request->input('size', null);
         $colors = Color::where("product_id", $product->id)->get();
         $sizes = Size::where("product_id", $product->id)->get();
 
@@ -94,8 +96,11 @@ class CartController extends Controller
                 $cart_item = Cart::create([
                     "user_id" => $user->id,
                     "product_id" => $product->id,
+                    "color" => $color,
+                    "size" => $size,
                     "quantity" => $quantity
                 ]);
+
                 if ($cart_item)
                     return $this->handleResponse(
                         true,
