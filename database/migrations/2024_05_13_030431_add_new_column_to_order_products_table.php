@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::table('order_products', function (Blueprint $table) {
             $table->float('price_in_order');
             $table->integer('ordered_quantity');
+            $table->string('color')->nullable();
+            $table->string('size')->nullable();
         });
     }
 

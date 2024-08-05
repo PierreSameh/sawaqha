@@ -66,47 +66,17 @@ class OrdersController extends Controller
                         $q->take(1);
                     }])->first();
                     if ($item_product) :
-                    if (isset($item->sell_price)) {
-                        $itemTotal = $item->sell_price * $item->quantity;
-                        $sub_total += $itemTotal;
-                    } 
-                        $item->total = (int) $item->quantity >= (int) $item_product->least_quantity_wholesale ? ((int) $item_product->wholesale_price * (int) $item->quantity) : ((int) $item_product->price * (int) $item->quantity);
-                        $sub_total += $item->total;
-                    endif;
+                        if (isset($item->sell_price)) {
+                            $itemTotal = $item->sell_price * $item->quantity;
+                            $sub_total += $itemTotal;
+                        } else {
+                            $item->total = (int) $item->quantity >= (int) $item_product->least_quantity_wholesale ? ((int) $item_product->wholesale_price * (int) $item->quantity) : ((int) $item_product->price * (int) $item->quantity);
+                            $sub_total += $item->total;
+                        }
+                        endif;
                     $item->dose_product_missing = $item_product ? false : true;
                     $item->product = $item_product ?? "This product is missing may deleted!";
                 }
-
-            // check if user is markter so ask for order sell price
-            if ($user->user_type == 1) {
-                $validator2 = Validator::make($request->all(), [
-                    "total_sell_price" => ["required", "numeric"],
-                ], [
-                    "total_sell_price.required" => "من فضلك ادخل سعر بيع الطلب",
-                    "total_sell_price.numeric" => "سعر بيع الطلب يجب ان يكون رقما"
-                ]);
-
-                if ($validator2->fails()) {
-                    return $this->handleResponse(
-                        false,
-                        "",
-                        [$validator2->errors()->first()],
-                        [],
-                        ["لو المستخدم مسوق وليس تاجر فعليه ان يدخل سعر بيع الطلب"]
-                    );
-                }
-
-                // check if sell price if lower than the min sell price
-                if ($request->total_sell_price < $sub_total) {
-                    return $this->handleResponse(
-                        false,
-                        "",
-                        ["لا يمكن بيع هذا الطلب اقل من " . $sub_total . " جنيها"],
-                        [],
-                        ["لو المستخدم مسوق وليس تاجر فعليه ان يدخل سعر بيع الطلب"]
-                    );
-                }
-            }
 
             // add user Expected profit
             // if fail so order also fail
@@ -120,7 +90,6 @@ class OrdersController extends Controller
                 "recipient_phone"               => $request->recipient_phone,
                 "recipient_address"             => $request->recipient_address,
                 "sub_total"                     => $sub_total,
-                "total_sell_price"              => $user->user_type == 1 ? $request->total_sell_price : $sub_total,
                 "user_type"                     => $user->user_type == 1 ? "مسوق" : "تاجر",
                 "user_id"                       => $user->id,
                 "status"                        => 1,
@@ -134,6 +103,8 @@ class OrdersController extends Controller
                         "order_id" => $order->id,
                         "product_id" => $item["product_id"],
                         "price_in_order" => $item["product"]["price"],
+                        "size" => $item["size"],
+                        "color" => $item["color"],
                         "ordered_quantity" => $item["quantity"],
                     ]);
                 }

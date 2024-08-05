@@ -35,6 +35,8 @@ class CartController extends Controller
 
         $product = Product::find($request->product_id);
         $quantity = $request->quantity ? $request->quantity : 1;
+        $color = $request->input('color', null);
+        $size = $request->input('size', null);
         $colors = Color::where("product_id", $product->id)->get();
         $sizes = Size::where("product_id", $product->id)->get();
 
@@ -94,8 +96,11 @@ class CartController extends Controller
                 $cart_item = Cart::create([
                     "user_id" => $user->id,
                     "product_id" => $product->id,
+                    "color" => $color,
+                    "size" => $size,
                     "quantity" => $quantity
                 ]);
+
                 if ($cart_item)
                     return $this->handleResponse(
                         true,
@@ -298,9 +303,10 @@ class CartController extends Controller
                     if (isset($item->sell_price)) {
                         $itemTotal = $item->sell_price * $item->quantity;
                         $sub_total += $itemTotal;
-                    } 
+                    } else {
                         $item->total = (int) $item->quantity >= (int) $item_product->least_quantity_wholesale ? ((int) $item_product->wholesale_price * (int) $item->quantity) : ((int) $item_product->price * (int) $item->quantity);
                         $sub_total += $item->total;
+                    }
                     endif;
                 $item->dose_product_missing = $item_product ? false : true;
                 $item->product = $item_product ?? "This product is missing may deleted!";
