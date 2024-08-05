@@ -317,4 +317,15 @@ class ProductsController extends Controller
         return redirect()->back();
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $products = Product::with("gallery")->latest()
+        ->where('name', 'like', "%{$query}%")
+        ->orWhere('id', 'like', "%{$query}%")
+        ->get();
+
+        return view('Admin.products.search', compact('products'));
+    }
 }
