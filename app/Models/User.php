@@ -33,6 +33,7 @@ class User extends Authenticatable
         'email_last_verfication_code_expird_at',
         'balance',
         'expected_profits',
+        'invitation_code',
     ];
 
     protected $hidden = [
