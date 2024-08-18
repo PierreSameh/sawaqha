@@ -34,6 +34,7 @@ class User extends Authenticatable
         'balance',
         'expected_profits',
         'invitation_code',
+        'used_invitation_code',
     ];
 
     protected $hidden = [

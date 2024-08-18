@@ -23,7 +23,7 @@ class DownloadLinkController extends Controller
         }
 
         // Generate a unique invitation code
-        $invitationCode = Str::random(8) . '_' . $user->id;
+        $invitationCode = Str::random(5) . '_' . $user->id;
 
         // Save the code to the user's invitation_code attribute
         $user->invitation_code = $invitationCode;
@@ -50,17 +50,23 @@ class DownloadLinkController extends Controller
             ], 400);
         }
 
-        // // Add 10 coins to the user's balance (entered user)
-        // $user->balance += 10;
-        // $user->save();
+        // Add 10 coins to the user's balance (entered user)
+        if ($user->used_invitation_code) {
+            $user->used_invitation_code = $invitingUser->invitation_code;
+            $user->save();
 
-        // Add 30 coins to the inviting user's balance
-        $invitingUser->balance += 5;
-        $invitingUser->save();
+            // Add 30 coins to the inviting user's balance
+            $invitingUser->balance += 5;
+            $invitingUser->save();
 
-        return response()->json([
-            'message' => 'Invitation code applied successfully',
-            // 'user_balance' => $user->balance,
-        ]);
+            return response()->json([
+                'message' => 'Invitation code applied successfully',
+                // 'user_balance' => $user->balance,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'You have use an invitation before',
+            ], 400);
+        }
     }
 }
