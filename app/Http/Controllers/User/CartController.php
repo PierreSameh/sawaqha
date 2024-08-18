@@ -305,7 +305,7 @@ class CartController extends Controller
                         $itemTotal = $item->sell_price * $item->quantity;
                         $sub_total += $itemTotal;
                     } else {
-                        $item->profit = (((int) $item->sell_price ?? (int) $item_product->price) * (int) $item->quantity) - (((int) $item->wholesale_price) * (int) $item->quantity);
+                        return $item->profit = (((int) $item->sell_price ?? (int) $item_product->price) * (int) $item->quantity) - ((int) $item->wholesale_price * (int) $item->quantity);
                         $item->total = ((int) $item->sell_price ?? (int) $item_product->price) * (int) $item->quantity;
                         $sub_total += $item->total;
                         $profit += $item->profit;
