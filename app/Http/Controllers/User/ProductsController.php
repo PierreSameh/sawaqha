@@ -173,7 +173,7 @@ class ProductsController extends Controller
         }
 
         $category = Category::with(["products" => function ($q) {
-            $q->with("gallery", "colors", "sizes");
+            $q->with("colors", "sizes", "galleries");
         }])->find($request->category_id);
 
         if ($category) {

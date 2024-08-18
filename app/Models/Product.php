@@ -21,7 +21,7 @@ class Product extends Model
         "category_id",
     ];
 
-    public function gallery()
+    public function galleries()
     {
         return $this->hasMany('App\Models\Gallery', 'product_id');
     }
