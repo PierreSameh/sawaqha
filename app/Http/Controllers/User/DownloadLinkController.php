@@ -61,7 +61,6 @@ class DownloadLinkController extends Controller
         return response()->json([
             'message' => 'Invitation code applied successfully',
             'user_balance' => $user->balance,
-            'inviting_user_balance' => $invitingUser->balance
         ]);
     }
 }
