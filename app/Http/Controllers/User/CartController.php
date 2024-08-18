@@ -293,6 +293,7 @@ class CartController extends Controller
         $user = $request->user();
         $cart = $user->cart()->get();
         $sub_total = 0;
+        $profit = 0;
 
         if ($cart->count() > 0)
             foreach ($cart as $item) {
@@ -304,8 +305,10 @@ class CartController extends Controller
                         $itemTotal = $item->sell_price * $item->quantity;
                         $sub_total += $itemTotal;
                     } else {
-                        $item->total = (int) $item->quantity >= (int) $item_product->least_quantity_wholesale ? ((int) $item_product->wholesale_price * (int) $item->quantity) : ((int) $item_product->price * (int) $item->quantity);
+                        $item->profit = (((int) $item->sell_price ?? (int) $item_product->price) * (int) $item->quantity) - (((int) $item->wholesale_price) * (int) $item->quantity);
+                        $item->total = ((int) $item->sell_price ?? (int) $item_product->price) * (int) $item->quantity;
                         $sub_total += $item->total;
+                        $profit += $item->profit;
                     }
                     endif;
                 $item->dose_product_missing = $item_product ? false : true;
@@ -314,7 +317,8 @@ class CartController extends Controller
 
         $cartDetails = [
             "products" => $cart,
-            "sub_total" => $sub_total
+            "sub_total" => $sub_total,
+            "profit" => $profit
         ];
 
         return $this->handleResponse(
