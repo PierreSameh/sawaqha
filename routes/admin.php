@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\Admin\MoneyRequestsContrller;
 use App\Http\Controllers\Admin\BacnnerController;
+use App\Http\Controllers\Admin\SocialController;
 use App\Http\Middleware\GuestAdminMiddleware;
 
 Route::prefix('admin')->group(function () {
@@ -85,5 +86,6 @@ Route::prefix('admin')->group(function () {
             Route::post("/request/cancel/confirm/{id}", [MoneyRequestsContrller::class, "cancel"])->name("admin.requests.cancel.post");
             Route::get("/request/success/{id}", [MoneyRequestsContrller::class, "successIndex"])->name("admin.requests.success");
         });
+        Route::post('/social/add', [SocialController::class, 'addSocial'])->name('admin.store.social');
     });
 });

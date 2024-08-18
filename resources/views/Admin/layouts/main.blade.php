@@ -236,6 +236,22 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#heading5"
+                    aria-expanded="true" aria-controls="heading5">
+                    <i class="fas fa-fw fa-receipt"></i>
+                    <span>Discount Coupon</span>
+                </a>
+                <div id="heading5" class="collapse" aria-labelledby="heading3" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ route("admin.orders.show.all") }}">Preview</a>
+                        <a class="collapse-item" href="{{ route("admin.orders.show.review") }}">Add</a>
+                        <a class="collapse-item" href="{{ route("admin.orders.show.confirmed") }}">Delete</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#heading4"
                     aria-expanded="true" aria-controls="heading3">
                     <i class="fas fa-fw fa-money-bill"></i>
