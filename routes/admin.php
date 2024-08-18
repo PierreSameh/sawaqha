@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\Admin\MoneyRequestsContrller;
 use App\Http\Controllers\Admin\BacnnerController;
 use App\Http\Controllers\Admin\SocialController;
+use App\Http\Controllers\Admin\ShipController;
 use App\Http\Middleware\GuestAdminMiddleware;
 
 Route::prefix('admin')->group(function () {
@@ -87,5 +88,10 @@ Route::prefix('admin')->group(function () {
             Route::get("/request/success/{id}", [MoneyRequestsContrller::class, "successIndex"])->name("admin.requests.success");
         });
         Route::post('/social/add', [SocialController::class, 'addSocial'])->name('admin.store.social');
+        Route::get('/ship/rates', [ShipController::class, 'getShip'])->name('admin.get.rates');
+        Route::post('/ship/rates/add-new', [ShipController::class,'store'])->name('admin.store.rates');
+        Route::get('/ship/rate/{rate}/edit', [ShipController::class,'edit'])->name('admin.edit.rates');
+        Route::post('/ship/rate/{rate}/update', [ShipController::class,'update'])->name('admin.update.rates');
+        Route::post('/ship/rate/{rate}/delete', [ShipController::class,'delete'])->name('admin.delete.rates');
     });
 });
