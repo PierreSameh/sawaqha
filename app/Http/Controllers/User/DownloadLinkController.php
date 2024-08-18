@@ -51,7 +51,7 @@ class DownloadLinkController extends Controller
         }
 
         // Add 10 coins to the user's balance (entered user)
-        if ($user->used_invitation_code) {
+        if (!$user->used_invitation_code) {
             $user->used_invitation_code = $invitingUser->invitation_code;
             $user->save();
 
