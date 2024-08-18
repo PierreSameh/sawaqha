@@ -18,6 +18,19 @@ class SocialController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $social = Setting::where("id", 1)->first();
+        if(!isset($social)){
+            $create = new Setting;
+            if($request->whatsapp){
+                $create->whatsapp = $request->whatsapp;
+                $create->save();
+            }
+            if($request->facebook){
+                $create->facebook = $request->facebook;
+                $create->save();
+            }
+            return redirect()->back()->with("success","Added Successfully");
+        }
+        if (isset($social)){
         if($request->whatsapp){
             $social->whatsapp = $request->whatsapp;
             $social->save();
@@ -27,6 +40,7 @@ class SocialController extends Controller
             $social->save();
         }
         return redirect()->back()->with("success","Added Successfully");
+    }
 
     }
 }
