@@ -18,8 +18,8 @@ class SocialController extends Controller
                 "",
                 [],
                 [
-                    "whatsapp"=> $social->whatsapp,
-                    "facebook"=> $social->facebook
+                    "whatsapp_suggestion"=> $social->whatsapp,
+                    "whatsaap_wholesale"=> $social->facebook
                 ],
                 []
             );
