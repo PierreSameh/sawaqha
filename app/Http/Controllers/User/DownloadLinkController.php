@@ -50,17 +50,17 @@ class DownloadLinkController extends Controller
             ], 400);
         }
 
-        // Add 10 coins to the user's balance (entered user)
-        $user->balance += 10;
-        $user->save();
+        // // Add 10 coins to the user's balance (entered user)
+        // $user->balance += 10;
+        // $user->save();
 
         // Add 30 coins to the inviting user's balance
-        $invitingUser->balance += 30;
+        $invitingUser->balance += 5;
         $invitingUser->save();
 
         return response()->json([
             'message' => 'Invitation code applied successfully',
-            'user_balance' => $user->balance,
+            // 'user_balance' => $user->balance,
         ]);
     }
 }
