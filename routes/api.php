@@ -12,6 +12,7 @@ use App\Http\Controllers\User\TransactionsController;
 use App\Http\Controllers\User\HomeEndpoints;
 use App\Http\Controllers\User\SocialController;
 use App\Http\Controllers\User\DownloadLinkController;
+use App\Http\Controllers\User\ShipController;
 
 // Users endpoints
 Route::post("/user/register", [AuthController::class, "register"]);
@@ -75,3 +76,6 @@ Route::get('/social/links', [SocialController::class,'getSocial']);
 // Invitation Code endpoints
 Route::post('/user/create-invitation-code', [DownloadLinkController::class, 'createInvitationCode'])->middleware('auth:sanctum');
 Route::post('/user/enter-invitation-code', [DownloadLinkController::class, 'enterInvitationCode'])->middleware('auth:sanctum');
+
+// shipping rates
+Route::get('/shipping', [ShipController::class, 'get']);

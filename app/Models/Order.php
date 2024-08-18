@@ -25,6 +25,7 @@ class Order extends Model
         "facebook",
         "web_page",
         "notes",
+        "shipping",
     ];
 
     public function user()
