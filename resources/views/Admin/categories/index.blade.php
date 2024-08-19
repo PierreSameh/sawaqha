@@ -8,9 +8,9 @@
 
 @section("content")
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Categories</h1>
+    <h1 class="h3 mb-0 text-gray-800">الفئات</h1>
     <a href="{{ route("admin.categories.add") }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-            class="fas fa-plus fa-sm text-white-50"></i> Create Category</a>
+            class="fas fa-plus fa-sm text-white-50"></i> إنشاء فئة</a>
 </div>
 
 <div class="card shadow mb-4">
@@ -19,9 +19,9 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Actions</th>
+                        <th>الاسم</th>
+                        <th>الوصف</th>
+                        <th>الخيارات</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,8 +30,8 @@
                             <td>{{ $cat->name }}</td>
                             <td>{{ substr($cat->description, 0, 100) }}</td>
                             <td>
-                                <a href="{{ route("admin.categories.edit", ["id" => $cat->id]) }}" class="btn btn-success">Edit</a>
-                                <a href="{{ route("admin.categories.delete.confirm", ["id" => $cat->id]) }}" class="btn btn-danger">Delete</a>
+                                <a href="{{ route("admin.categories.edit", ["id" => $cat->id]) }}" class="btn btn-success">تعديل</a>
+                                <a href="{{ route("admin.categories.delete.confirm", ["id" => $cat->id]) }}" class="btn btn-danger">إزالة</a>
                             </td>
                         </tr>
                     @endforeach

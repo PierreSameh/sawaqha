@@ -5,21 +5,21 @@
 
 @section("content")
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Create Banner</h1>
+    <h1 class="h3 mb-0 text-gray-800">إضافة لافتة</h1>
     <a href="{{ route("admin.banners.show") }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-            class="fas fa-arrow-left fa-sm text-white-50"></i> Back</a>
+            class="fas fa-arrow-left fa-sm text-white-50"></i>عودة إلى الخلف</a>
 </div>
 
 <div class="card p-3 mb-3" id="banners_wrapper">
     <div class="d-flex justify-content-between" style="gap: 16px">
         <div class="w-100">
             <div class="form-group w-100">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name"  placeholder="Banner Name" v-model="name">
+                <label for="name" class="form-label">الاسم</label>
+                <input type="text" class="form-control" id="name"  placeholder="اسم اللافتة" v-model="name">
             </div>
             <div class="form-group">
-                <label for="Description" class="form-label">Description</label>
-                <textarea rows="5" class="form-control" id="Description"  placeholder="Description Name" style="resize: none" v-model="description">
+                <label for="Description" class="form-label">الوصف</label>
+                <textarea rows="5" class="form-control" id="Description"  placeholder="وصف اللافتة" style="resize: none" v-model="description">
                 </textarea>
             </div>
         </div>
@@ -40,7 +40,7 @@
         </div>
     </div>
     <div class="form-group">
-        <button class="btn btn-success w-25" @click="create">Create</button>
+        <button class="btn btn-success w-25" @click="create">إضافة</button>
     </div>
 </div>
 

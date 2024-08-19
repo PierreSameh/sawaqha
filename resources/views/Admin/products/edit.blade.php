@@ -5,9 +5,9 @@
 
 @section("content")
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Update Product</h1>
+    <h1 class="h3 mb-0 text-gray-800">تعديل المنتج</h1>
     <a href="{{ route("admin.products.show") }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-            class="fas fa-arrow-left fa-sm text-white-50"></i> Back</a>
+            class="fas fa-arrow-left fa-sm text-white-50"></i> العودة إلى الخلف</a>
 </div>
 @php
     $categories = App\Models\Category::latest()->get();
@@ -16,36 +16,36 @@
     <div class="d-flex justify-content-between" style="gap: 16px">
         <div class="w-50">
             <div class="form-group w-100">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name"  placeholder="Product Name" v-model="name">
+                <label for="name" class="form-label">الاسم</label>
+                <input type="text" class="form-control" id="name"  placeholder="اسم المنتج" v-model="name">
             </div>
             <div class="form-group w-100">
-                <label for="price" class="form-label">Sell Price</label>
-                <input type="number" class="form-control" id="price"  placeholder="Sell Price" v-model="price">
+                <label for="price" class="form-label">سعر البيع</label>
+                <input type="number" class="form-control" id="price"  placeholder="سعر البيع" v-model="price">
             </div>
             <div class="form-group w-100">
-                <label for="quantity" class="form-label">Quantity</label>
-                <input type="number" class="form-control" id="quantity"  placeholder="Quantity" v-model="quantity">
+                <label for="quantity" class="form-label">الكمية</label>
+                <input type="number" class="form-control" id="quantity"  placeholder="الكمية" v-model="quantity">
             </div>
             <div class="form-group w-100">
-                <label for="wholesale_price" class="form-label">Wholesale Price</label>
-                <input type="number" class="form-control" id="wholesale_price"  placeholder="Wholesale Price" v-model="wholesale_price">
+                <label for="wholesale_price" class="form-label">سعر الجملة</label>
+                <input type="number" class="form-control" id="wholesale_price"  placeholder="سعر الجملة" v-model="wholesale_price">
             </div>
             <div class="form-group w-100">
-                <label for="least_quantity_wholesale" class="form-label">Least quantity wholesale</label>
-                <input type="number" class="form-control" id="least_quantity_wholesale"  placeholder="Least quantity wholesale" v-model="least_quantity_wholesale">
+                <label for="least_quantity_wholesale" class="form-label">أقل كمية جملة</label>
+                <input type="number" class="form-control" id="least_quantity_wholesale"  placeholder="أقل كمية جملة" v-model="least_quantity_wholesale">
             </div>
             <div class="form-group w-100">
-                <label for="categories" class="form-label">Category</label>
+                <label for="categories" class="form-label">الفئة</label>
                 <select name="categories" id="categories" class="form-control" v-model="category_id">
-                    <option value="" disabled>Select ---</option>
+                    <option value="" disabled>--- اختر</option>
                     <option v-for="cat in categories" :key="cat.id" :value="cat.id">@{{ cat.name }}</option>
                 </select>
             </div>
         </div>
         <div class="form-group w-50">
-            <label for="Description" class="form-label">Description</label>
-            <textarea rows="7" class="form-control" id="Description"  placeholder="Description" style="resize: none" v-model="description">
+            <label for="Description" class="form-label">الوصف</label>
+            <textarea rows="7" class="form-control" id="Description"  placeholder="الوصف" style="resize: none" v-model="description">
             </textarea>
             <div class="form-group pt-4 pb-4" style="width: max-content; height: 300px;min-width: 100%">
                 <label for="thumbnail" class="w-100 h-100">
@@ -66,8 +66,7 @@
     </div>
     <div class="w-100 form-group">
         <label for="gallary" class="form-control"
-        style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 140px; font-size: 22px;">Upload
-        Product Image*
+        style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 140px; font-size: 22px;">رفع صور المنتج*
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-photo-plus" width="55"
             height="55" viewBox="0 0 24 24" stroke-width="2" stroke="#2c3e50" fill="none" stroke-linecap="round"
             stroke-linejoin="round">
@@ -119,13 +118,13 @@
         </div>
      </div>
      <div class="d-flex justify-content-between mb-4">
-        <h2>Does this product has sizes?</h2>
-        <button class="btn btn-primary" @click="handleAddSize">Add Sizes</button>
+        <h2>هل للمنتج احجام؟</h2>
+        <button class="btn btn-primary" @click="handleAddSize">إضافة احجام</button>
      </div>
     <table class="table" v-if="sizes && sizes.length > 0">
         <thead>
           <tr>
-            <th scope="col">Size</th>
+            <th scope="col">الحجم</th>
             <th></th>
           </tr>
         </thead>
@@ -135,40 +134,40 @@
                 <input type="text" name="size" id="size" class="form-control" placeholder="Size" v-model="sizes[index]['size']">
             </td>
             <td>
-                <button class="btn btn-danger" @click="handleRemoveSize(index)">Remove</button>
+                <button class="btn btn-danger" @click="handleRemoveSize(index)">إزالة</button>
             </td>
           </tr>
         </tbody>
     </table>
      <div class="d-flex justify-content-between mb-4">
-        <h2>Does this product has colors?</h2>
-        <button class="btn btn-primary" @click="handleAddColor">Add Color</button>
+        <h2>هل للمنتج ألوان؟</h2>
+        <button class="btn btn-primary" @click="handleAddColor">إضافة ألوان</button>
      </div>
      <table class="table" v-if="colors && colors.length > 0">
         <thead>
           <tr>
-            <th scope="col">Color name</th>
-            <th scope="col">Color code</th>
+            <th scope="col">اسم اللون</th>
+            <th scope="col">رمز اللون</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="option, index in colors" :key="index">
             <td>
-                <input type="text" name="size" id="size" class="form-control" placeholder="Color Name" v-model="colors[index]['color']">
+                <input type="text" name="size" id="size" class="form-control" placeholder="اسم اللون" v-model="colors[index]['color']">
             </td>
             <td>
-                <input type="color" name="color" id="color" class="form-control" placeholder="Color" v-model="colors[index]['code']">
+                <input type="color" name="color" id="color" class="form-control" placeholder="اللون" v-model="colors[index]['code']">
             </td>
             <td>
-                <button class="btn btn-danger" @click="handleRemoveColor(index)">Remove</button>
+                <button class="btn btn-danger" @click="handleRemoveColor(index)">إزالة</button>
             </td>
           </tr>
         </tbody>
     </table>
 
     <div class="form-group">
-        <button class="btn btn-success w-25" @click="update" style="display: block;margin: auto">Update</button>
+        <button class="btn btn-success w-25" @click="update" style="display: block;margin: auto">تعديل</button>
     </div>
 </div>
 

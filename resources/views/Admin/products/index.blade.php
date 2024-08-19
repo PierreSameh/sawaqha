@@ -8,9 +8,9 @@
 
 @section("content")
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Products</h1>
+    <h1 class="h3 mb-0 text-gray-800">المنتجات</h1>
     <a href="{{ route("admin.products.add") }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-            class="fas fa-plus fa-sm text-white-50"></i> Create Product</a>
+            class="fas fa-plus fa-sm text-white-50"></i> إضافة منتج</a>
 </div>
 
 <div class="card shadow mb-4">
@@ -19,10 +19,10 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Avilable quantity</th>
-                        <th>Actions</th>
+                        <th>الاسم</th>
+                        <th>الوصف</th>
+                        <th>الكمية المتاحة</th>
+                        <th>الخيارات</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,8 +33,8 @@
                             <td>{{ $prod->quantity }}</td>
                             <td>
                                 <div class="btns" style="display: flex;gap: 4px">
-                                    <a href="{{ route("admin.products.edit", ["id" => $prod->id]) }}" class="btn btn-success">Edit</a>
-                                    <a href="{{ route("admin.products.delete.confirm", ["id" => $prod->id]) }}" class="btn btn-danger">Delete</a>
+                                    <a href="{{ route("admin.products.edit", ["id" => $prod->id]) }}" class="btn btn-success">تعديل</a>
+                                    <a href="{{ route("admin.products.delete.confirm", ["id" => $prod->id]) }}" class="btn btn-danger">إزالة</a>
                                     <form action="{{ route("admin.products.toggleDis", ["id" => $prod->id]) }}">
                                         <button type="submit" style="background: transparent; border: none">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-discount-2" width="35" height="35" viewBox="0 0 24 24" stroke-width="2" stroke="{{ $prod->isDiscounted ? "#1cc88a" : "#e74a3b"}}" fill="none" stroke-linecap="round" stroke-linejoin="round">

@@ -140,7 +140,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Admin Panel</div>
+                <div class="sidebar-brand-text mx-3">واجهة المشرف</div>
             </a>
 
             <!-- Divider -->
@@ -150,7 +150,7 @@
             <li class="nav-item active">
                 <a class="nav-link" href="{{ route('admin.dashboard')}}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>لوحة التحكم</span></a>
             </li>
 
             <!-- Divider -->
@@ -158,7 +158,7 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Manage Inventory
+                ادارة الخزانة
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
@@ -166,12 +166,12 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Banners"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-ad"></i>
-                    <span>Banners</span>
+                    <span>اللافتات</span>
                 </a>
                 <div id="Banners" class="collapse" aria-labelledby="Banners" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route("admin.banners.show") }}">Preview</a>
-                        <a class="collapse-item" href="{{ route("admin.banners.add") }}">Add</a>
+                        <a class="collapse-item" href="{{ route("admin.banners.show") }}">المعاينة</a>
+                        <a class="collapse-item" href="{{ route("admin.banners.add") }}">إضافة</a>
                     </div>
                 </div>
             </li>
@@ -180,12 +180,12 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-list"></i>
-                    <span>Categories</span>
+                    <span>الفئات</span>
                 </a>
                 <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route("admin.categories.show") }}">Preview</a>
-                        <a class="collapse-item" href="{{ route("admin.categories.add") }}">Add</a>
+                        <a class="collapse-item" href="{{ route("admin.categories.show") }}">المعاينة</a>
+                        <a class="collapse-item" href="{{ route("admin.categories.add") }}">إضافة</a>
                     </div>
                 </div>
             </li>
@@ -195,12 +195,12 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-box"></i>
-                    <span>Products</span>
+                    <span>المنتجات</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route("admin.products.show") }}">Preview</a>
-                        <a class="collapse-item" href="{{ route("admin.products.add") }}">Add</a>
+                        <a class="collapse-item" href="{{ route("admin.products.show") }}">المعاينة</a>
+                        <a class="collapse-item" href="{{ route("admin.products.add") }}">إضافة</a>
                     </div>
                 </div>
             </li>
@@ -212,7 +212,7 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Manage Transactions
+                إدارة التحويلات
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
@@ -220,16 +220,16 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#heading3"
                     aria-expanded="true" aria-controls="heading3">
                     <i class="fas fa-fw fa-receipt"></i>
-                    <span>Orders</span>
+                    <span>الطلبات</span>
                 </a>
                 <div id="heading3" class="collapse" aria-labelledby="heading3" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route("admin.orders.show.all") }}">All</a>
-                        <a class="collapse-item" href="{{ route("admin.orders.show.review") }}">Under review</a>
-                        <a class="collapse-item" href="{{ route("admin.orders.show.confirmed") }}">Confirmed</a>
-                        <a class="collapse-item" href="{{ route("admin.orders.show.delivary") }}">On delivery</a>
-                        <a class="collapse-item" href="{{ route("admin.orders.show.completed") }}">Completed</a>
-                        <a class="collapse-item" href="{{ route("admin.orders.show.canceled") }}">Canceled</a>
+                        <a class="collapse-item" href="{{ route("admin.orders.show.all") }}">الجميع</a>
+                        <a class="collapse-item" href="{{ route("admin.orders.show.review") }}">تحت المراجعة</a>
+                        <a class="collapse-item" href="{{ route("admin.orders.show.confirmed") }}">تم قبوله</a>
+                        <a class="collapse-item" href="{{ route("admin.orders.show.delivary") }}">يتم الشحن</a>
+                        <a class="collapse-item" href="{{ route("admin.orders.show.completed") }}">انتهى</a>
+                        <a class="collapse-item" href="{{ route("admin.orders.show.canceled") }}">تم الغاءه</a>
                     </div>
                 </div>
             </li>
@@ -239,13 +239,13 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#heading5"
                     aria-expanded="true" aria-controls="heading5">
                     <i class="fas fa-fw fa-receipt"></i>
-                    <span>Discount Coupon</span>
+                    <span>كروت الخصم</span>
                 </a>
                 <div id="heading5" class="collapse" aria-labelledby="heading3" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route("admin.orders.show.all") }}">Preview</a>
-                        <a class="collapse-item" href="{{ route("admin.orders.show.review") }}">Add</a>
-                        <a class="collapse-item" href="{{ route("admin.orders.show.confirmed") }}">Delete</a>
+                        <a class="collapse-item" href="{{ route("admin.orders.show.all") }}">المعاينة</a>
+                        <a class="collapse-item" href="{{ route("admin.orders.show.review") }}">إضافة</a>
+                        <a class="collapse-item" href="{{ route("admin.orders.show.confirmed") }}">إزالة</a>
                     </div>
                 </div>
             </li>
@@ -255,21 +255,21 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#heading4"
                     aria-expanded="true" aria-controls="heading3">
                     <i class="fas fa-fw fa-money-bill"></i>
-                    <span>Requests</span>
+                    <span>طلبات التحويل</span>
                 </a>
                 <div id="heading4" class="collapse" aria-labelledby="heading3" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route("admin.requests.show.all") }}">All</a>
-                        <a class="collapse-item" href="{{ route("admin.requests.show.review") }}">Under review</a>
-                        <a class="collapse-item" href="{{ route("admin.requests.show.completed") }}">Completed</a>
-                        <a class="collapse-item" href="{{ route("admin.requests.show.canceled") }}">Canceled</a>
+                        <a class="collapse-item" href="{{ route("admin.requests.show.all") }}">الجميع</a>
+                        <a class="collapse-item" href="{{ route("admin.requests.show.review") }}">تحت المراجعة</a>
+                        <a class="collapse-item" href="{{ route("admin.requests.show.completed") }}">اكتمل</a>
+                        <a class="collapse-item" href="{{ route("admin.requests.show.canceled") }}">تم الغاءه</a>
                     </div>
                 </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('admin.get.rates')}}">
                     <i class="fas fa-fw fa-ad"></i>
-                    <span>Shipping Rates</span>
+                    <span>اسعار الشحن</span>
                 </a>
             </li>
 
@@ -303,7 +303,7 @@
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         @csrf
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="...ابحث عن"
                                 aria-label="Search" aria-describedby="basic-addon2" name="query">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit">
@@ -328,7 +328,7 @@
                                 <form method="GET" action="{{route('admin.products.search')}}" class="form-inline mr-auto w-100 navbar-search">
                                     <div class="input-group">
                                         <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
+                                            placeholder="...ابحث عن" aria-label="Search"
                                             aria-describedby="basic-addon2" name="query">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="submit">

@@ -5,36 +5,36 @@
 
 @section("content")
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Update Category</h1>
+    <h1 class="h3 mb-0 text-gray-800">تعديل الفئة</h1>
     <a href="{{ route("admin.categories.show") }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-            class="fas fa-arrow-left fa-sm text-white-50"></i> Back</a>
+            class="fas fa-arrow-left fa-sm text-white-50"></i> العودة إلى الخلف</a>
 </div>
 
 <div class="card p-3 mb-3" id="categories_wrapper">
     <div class="d-flex justify-content-between" style="gap: 16px">
         <div class="w-100">
             <div class="form-group w-100">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name"  placeholder="Category Name" v-model="name">
+                <label for="name" class="form-label">الاسم</label>
+                <input type="text" class="form-control" id="name"  placeholder="اسم الفئة" v-model="name">
             </div>
             <div class="form-group">
-                <label for="Description" class="form-label">Description</label>
-                <textarea rows="4" class="form-control" id="Description"  placeholder="Description Name" style="resize: none" v-model="description">
+                <label for="Description" class="form-label">الوصف</label>
+                <textarea rows="4" class="form-control" id="Description"  placeholder="وصف الفئة" style="resize: none" v-model="description">
                 </textarea>
             </div>
             <div class="d-flex justify-content-between" style="gap: 16px">
                 <div class="form-group w-50">
-                    <label for="name" class="form-label">Category type</label>
+                    <label for="name" class="form-label">نوع الفئة</label>
                     <select name="isMian" id="isMain" class="form-control" v-model="category_type">
-                        <option value="1">Main Category</option>
-                        <option value="2">Sub Category</option>
+                        <option value="1">الفئة الرئيسة</option>
+                        <option value="2">الفئة الفرعية</option>
                     </select>
                 </div>
                 @php
                     $categories = App\Models\Category::where("isMainCat", true)->get();
                 @endphp
                 <div class="form-group w-50" v-if="category_type == 2">
-                    <label for="name" class="form-label">Choose main category</label>
+                    <label for="name" class="form-label">اختر الفئة الرئيسة</label>
                     <select name="isMian" id="isMain" class="form-control" v-model="parent_category_id">
                         @foreach ($categories as $item)
                             <option value="{{$item->id}}">{{ $item->name }}</option>
@@ -57,11 +57,11 @@
                 </svg>
                 <img v-if="thumbnail_path" :src="thumbnail_path" style="width: 100%; height: 100%; object-fit: cover; padding: 10px; border: 1px solid; border-radius: 1rem" />
             </label>
-        <input type="file" class="form-control d-none" id="thumbnail"  placeholder="Category Thumbnail Picture" @change="handleChangeThumbnail">
+        <input type="file" class="form-control d-none" id="thumbnail"  placeholder="صورة الفئة" @change="handleChangeThumbnail">
         </div>
     </div>
     <div class="form-group">
-        <button class="btn btn-success w-25" @click="update">Update</button>
+        <button class="btn btn-success w-25" @click="update">تعديل</button>
     </div>
 </div>
 
