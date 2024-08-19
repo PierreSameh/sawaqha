@@ -43,6 +43,10 @@
             <label>Recipient Address</label>
             <span class="form-control">{{ $order->recipient_address }}</span>
         </div>
+        <div class="form-group" style="grid-column: span 2">
+            <label>Shipping</label>
+            <span class="form-control">{{ $order->shipping }}</span>
+        </div>
     </div>
     <hr>
     <h2>Order Information:</h2>

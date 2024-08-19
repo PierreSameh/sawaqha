@@ -41,6 +41,7 @@ class OrdersController extends Controller
                 "recipient_address" => ["required"],
                 "recipient_name" => ["required", "string"],
                 "recipient_phone" => ["required"],
+                "shipping" => ["required"],
             ], [
                 "recipient_governorate.required" => "محافظة المستلم مطلوبة",
                 "recipient_name.required" => "اسم المستلم مطلوب",
@@ -95,6 +96,7 @@ class OrdersController extends Controller
                 "status"                        => 1,
                 "recipient_governorate"         => $request->recipient_governorate,
                 "notes"                         => $request->notes,
+                "shipping"                      => $request->shipping,
             ]);
 
             foreach ($cart as $item) {

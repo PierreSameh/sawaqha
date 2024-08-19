@@ -26,6 +26,7 @@ return new class extends Migration
             $table->dateTime('phone_last_verfication_code_expird_at')->nullable();
             $table->dateTime('email_last_verfication_code_expird_at')->nullable();
             $table->string('password');
+            $table->string('invitation_code');
             $table->rememberToken();
             $table->timestamps();
         });
