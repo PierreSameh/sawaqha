@@ -205,7 +205,7 @@ class OrdersController extends Controller
                     "user_id" => $order->user->id,
                     "order_id" => $order->id,
                     "type" => 1,
-                    "amount" => ((float) $order->total_sell_price - (float) $order->sub_total),
+                    "amount" => $profit,
                 ]);
     
                 if ($order->user) {
