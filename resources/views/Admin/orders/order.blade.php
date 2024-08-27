@@ -90,8 +90,8 @@
                         <td>{{ $product->price_in_order }}</td>
                         <td>{{ $product->ordered_quantity }}</td>
                         <td>{{ $product->product->category->name }}</td>
-                        <td>{{ $product->product->color }}</td>
-                        <td>{{ $product->product->size }}</td>
+                        <td>{{ $product->color }}</td>
+                        <td>{{ $product->size }}</td>
                     </tr>
                     @else
                     <tr class="text-center text-danger">
