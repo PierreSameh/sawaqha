@@ -111,8 +111,8 @@ class OrdersController extends Controller
         else if ($order->status === 3) {
             $order->status = 4;
             if ($order->user->user_type == 1) {
-                $order->user->expected_profit = $order->user->expected_profit + ((float) $order->total_sell_price - (float) $order->sub_total);
-                $order->user->balance = $order->user->balance + ((float) $order->total_sell_price - (float) $order->sub_total);
+                $order->user->expected_profit = $order->user->expected_profit + (float) $order->sub_total - ((float) $order->product->wholesale_price * $order->product->quantity);
+                $order->user->balance = $order->user->balance + (float) $order->sub_total - ((float) $order->product->wholesale_price * $order->product->quantity);
                 $order->user->save();
                 $transaction = Transaction::create([ 
                     "user_id" => $order->user->id,
