@@ -91,92 +91,152 @@ class OrdersController extends Controller
         );
     }
 
+    // public function approve($id) {
+    //     $order = Order::with(["products" => function ($q) {
+    //         $q->with(["product" => function ($q) {
+    //             $q->with("category");
+    //         }]);
+    //     }, "user"])->find($id);
+
+    //     if ($order->status === 1) {
+    //         $order->status = 2;
+    //         $order->save();
+    //     }
+
+    //     else if ($order->status === 2) {
+    //         $order->status = 3;
+    //         $order->save();
+    //     }
+
+    //     else if ($order->status === 3) {
+    //         $order->status = 4;
+    //         if ($order->user->user_type == 1) {
+    //             $order->user->expected_profit = $order->user->expected_profit + (float) $order->sub_total - ((float) $order->products->product->wholesale_price * $order->products->quantity);
+    //             $order->user->balance = $order->user->balance + (float) $order->sub_total - ((float) $order->products->product->wholesale_price * $order->products->quantity);
+    //             $order->user->save();
+    //             $transaction = Transaction::create([ 
+    //                 "user_id" => $order->user->id,
+    //                 "order_id" => $order->id,
+    //                 "type" => 1,
+    //                 "amount" => ((float) $order->total_sell_price - (float) $order->sub_total),
+    //             ]);
+    //             if ($order->user) {
+    //                 $msg_title = "أضافة ربح " . ((float) $order->total_sell_price - (float) $order->sub_total) . " جنيها";
+    //                 $msg_content = "<h1>";
+    //                 $msg_content = " تم اطافة مبلغ" . ((float) $order->total_sell_price - (float) $order->sub_total) . " جنيها الي حسابك كعمولة من الطلب هذا <br> يمكنك طلب المبلغ الان من التطبيق";
+    //                 $msg_content .= "</h1>";
+    //                 $msg_content .= "<br>";
+    //                 $msg_content .= "<h3>";
+    //                 $msg_content .= "تفاصيل الطلب: ";
+    //                 $msg_content .= "</h3>";
+
+    //                 $msg_content .= "<h4>";
+    //                 $msg_content .= "اسم المستلم: ";
+    //                 $msg_content .= $order->recipient_name;
+    //                 $msg_content .= "</h4>";
+
+
+    //                 $msg_content .= "<h4>";
+    //                 $msg_content .= "رقم هاتف المستلم: ";
+    //                 $msg_content .= $order->recipient_phone;
+    //                 $msg_content .= "</h4>";
+
+
+    //                 $msg_content .= "<h4>";
+    //                 $msg_content .= "عنوان المستلم: ";
+    //                 $msg_content .= $order->recipient_address;
+    //                 $msg_content .= "</h4>";
+
+
+    //                 $msg_content .= "<h4>";
+    //                 $msg_content .= "الاجمالي : ";
+    //                 $msg_content .= $order->sub_total;
+    //                 $msg_content .= "</h4>";
+
+
+    //                 $msg_content .= "<h4>";
+    //                 $msg_content .= "سعر البيع : ";
+    //                 $msg_content .= $order->total_sell_price;
+    //                 $msg_content .= "</h4>";
+
+    //                 $this->sendEmail($order->user->email, $msg_title, $msg_content);
+    //             }
+    //         }
+    //         $order->save();
+    //     }
+
+    //     if ($order) {
+    //         return redirect('/admin/orders/order/success/' . $order->id);
+    //     }
+
+    //     return $this->handleResponse(
+    //         false,
+    //         "",
+    //         ["Fail Proccess"],
+    //         [],
+    //         []
+    //     );
+    // }
+
     public function approve($id) {
         $order = Order::with(["products" => function ($q) {
             $q->with(["product" => function ($q) {
                 $q->with("category");
             }]);
         }, "user"])->find($id);
-
+    
         if ($order->status === 1) {
             $order->status = 2;
             $order->save();
-        }
-
-        else if ($order->status === 2) {
+        } else if ($order->status === 2) {
             $order->status = 3;
             $order->save();
-        }
-
-        else if ($order->status === 3) {
+        } else if ($order->status === 3) {
             $order->status = 4;
             if ($order->user->user_type == 1) {
-                $order->user->expected_profit = $order->user->expected_profit + (float) $order->sub_total - ((float) $order->products->product->wholesale_price * $order->products->quantity);
-                $order->user->balance = $order->user->balance + (float) $order->sub_total - ((float) $order->products->product->wholesale_price * $order->products->quantity);
+                foreach ($order->products as $orderProduct) {
+                    $profit = (float) $order->sub_total - ((float) $orderProduct->product->wholesale_price * $orderProduct->quantity);
+                    $order->user->expected_profit += $profit;
+                    $order->user->balance += $profit;
+                }
                 $order->user->save();
-                $transaction = Transaction::create([ 
+    
+                $transaction = Transaction::create([
                     "user_id" => $order->user->id,
                     "order_id" => $order->id,
                     "type" => 1,
                     "amount" => ((float) $order->total_sell_price - (float) $order->sub_total),
                 ]);
+    
                 if ($order->user) {
                     $msg_title = "أضافة ربح " . ((float) $order->total_sell_price - (float) $order->sub_total) . " جنيها";
-                    $msg_content = "<h1>";
-                    $msg_content = " تم اطافة مبلغ" . ((float) $order->total_sell_price - (float) $order->sub_total) . " جنيها الي حسابك كعمولة من الطلب هذا <br> يمكنك طلب المبلغ الان من التطبيق";
-                    $msg_content .= "</h1>";
-                    $msg_content .= "<br>";
-                    $msg_content .= "<h3>";
-                    $msg_content .= "تفاصيل الطلب: ";
-                    $msg_content .= "</h3>";
-
-                    $msg_content .= "<h4>";
-                    $msg_content .= "اسم المستلم: ";
-                    $msg_content .= $order->recipient_name;
-                    $msg_content .= "</h4>";
-
-
-                    $msg_content .= "<h4>";
-                    $msg_content .= "رقم هاتف المستلم: ";
-                    $msg_content .= $order->recipient_phone;
-                    $msg_content .= "</h4>";
-
-
-                    $msg_content .= "<h4>";
-                    $msg_content .= "عنوان المستلم: ";
-                    $msg_content .= $order->recipient_address;
-                    $msg_content .= "</h4>";
-
-
-                    $msg_content .= "<h4>";
-                    $msg_content .= "الاجمالي : ";
-                    $msg_content .= $order->sub_total;
-                    $msg_content .= "</h4>";
-
-
-                    $msg_content .= "<h4>";
-                    $msg_content .= "سعر البيع : ";
-                    $msg_content .= $order->total_sell_price;
-                    $msg_content .= "</h4>";
-
+                    $msg_content = "<h1> تم اطافة مبلغ" . ((float) $order->total_sell_price - (float) $order->sub_total) . " جنيها الي حسابك كعمولة من الطلب هذا <br> يمكنك طلب المبلغ الان من التطبيق</h1>";
+                    $msg_content .= "<br><h3>تفاصيل الطلب: </h3>";
+                    $msg_content .= "<h4>اسم المستلم: " . $order->recipient_name . "</h4>";
+                    $msg_content .= "<h4>رقم هاتف المستلم: " . $order->recipient_phone . "</h4>";
+                    $msg_content .= "<h4>عنوان المستلم: " . $order->recipient_address . "</h4>";
+                    $msg_content .= "<h4>الاجمالي : " . $order->sub_total . "</h4>";
+                    $msg_content .= "<h4>سعر البيع : " . $order->total_sell_price . "</h4>";
+    
                     $this->sendEmail($order->user->email, $msg_title, $msg_content);
                 }
             }
             $order->save();
         }
-
+    
         if ($order) {
             return redirect('/admin/orders/order/success/' . $order->id);
         }
-
+    
         return $this->handleResponse(
             false,
             "",
-            ["Fail Proccess"],
+            ["Fail Process"],
             [],
             []
         );
     }
+    
 
     public function cancel($id) {
         $order = Order::with(["products" => function ($q) {
