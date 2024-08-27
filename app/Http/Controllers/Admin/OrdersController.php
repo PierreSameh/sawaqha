@@ -195,7 +195,7 @@ class OrdersController extends Controller
             $order->status = 4;
             if ($order->user->user_type == 1) {
                 foreach ($order->products as $orderProduct) {
-                    $profit = (float) $order->sub_total - ((float) $orderProduct->product->wholesale_price * $orderProduct->quantity);
+                    $profit = (float) $order->sub_total - ((float) $orderProduct->product->wholesale_price * (int) $orderProduct->ordered_quantity);
                     $order->user->expected_profit += $profit;
                     $order->user->balance += $profit;
                 }
