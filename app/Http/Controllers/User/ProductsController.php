@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Models\Size;
 use App\Models\Color;
+use App\Models\Gallery;
 class ProductsController extends Controller
 {
     use HandleResponseTrait;
@@ -189,6 +190,8 @@ class ProductsController extends Controller
                 $product->colors = $colors;
                 $sizes = Size::where('product_id', $product->id)->get();
                 $product->sizes = $sizes;
+                $gallery = Gallery::where('product_id', $product->id)->get();
+                $product->gallery = $gallery;
             }
 
 
