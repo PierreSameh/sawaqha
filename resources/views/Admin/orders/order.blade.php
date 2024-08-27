@@ -77,6 +77,8 @@
                     <th>Product Sold Price</th>
                     <th>Product Sold Quantity</th>
                     <th>Product Category</th>
+                    <th>Product Color</th>
+                    <th>Product Size</th>
                 </tr>
             </thead>
             <tbody>
@@ -88,6 +90,8 @@
                         <td>{{ $product->price_in_order }}</td>
                         <td>{{ $product->ordered_quantity }}</td>
                         <td>{{ $product->product->category->name }}</td>
+                        <td>{{ $product->product->color }}</td>
+                        <td>{{ $product->product->size }}</td>
                     </tr>
                     @else
                     <tr class="text-center text-danger">
