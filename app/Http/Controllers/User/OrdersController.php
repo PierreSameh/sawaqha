@@ -190,6 +190,156 @@ class OrdersController extends Controller
             );
         }
     }
+    public function placeSingleOrder(Request $request) {
+        DB::beginTransaction();
+
+        try {
+
+            $user = $request->user();
+
+
+            // validate recipient info
+            $validator = Validator::make($request->all(), [
+                "recipient_governorate" => ["required"],
+                "recipient_address" => ["required"],
+                "recipient_name" => ["required", "string"],
+                "recipient_phone" => ["required"],
+                "shipping" => ["required"],
+            ], [
+                "recipient_governorate.required" => "محافظة المستلم مطلوبة",
+                "recipient_name.required" => "اسم المستلم مطلوب",
+                "recipient_phone.required" => "رقم هاتف المستلم مطلوب",
+                "recipient_address.required" => "عنوان المستلم مطلوب"
+            ]);
+
+            if ($validator->fails()) {
+                return $this->handleResponse(
+                    false,
+                    "",
+                    [$validator->errors()->first()],
+                    [],
+                    ["لو المستخدم مسوق وليس تاجر فعليه ان يدخل سعر بيع الطلب"]
+                );
+            }
+
+            // get cart sub total
+                    $item_product = Product::where('id', $request->product_id)->with(["gallery" => function ($q) {
+                        $q->take(1);
+                    }])->first();
+                    if ($item_product){
+                            $sub_total = (int) $item_product->price  * (int) $request->quantity;
+                    }
+                    // $total->dose_product_missing = $item_product ? false : true;
+                    // $total->product = $item_product ?? "This product is missing may deleted!";
+                
+
+            // add user Expected profit
+            // if fail so order also fail
+            if ($user->user_type == 1) {
+                $user->expected_profit = (float) $user->expected_profit +  (float) $sub_total;
+                $user->save();
+            }
+
+            $order = Order::create([
+                "recipient_name"                => $request->recipient_name,
+                "recipient_phone"               => $request->recipient_phone,
+                "recipient_address"             => $request->recipient_address,
+                "sub_total"                     => $sub_total,
+                "user_type"                     => $user->user_type == 1 ? "مسوق" : "تاجر",
+                "user_id"                       => $user->id,
+                "status"                        => 1,
+                "recipient_governorate"         => $request->recipient_governorate,
+                "notes"                         => $request->notes,
+                "shipping"                      => $request->shipping,
+            ]);
+
+                    $record_product = Ordered_Product::create([
+                        "order_id" => $order->id,
+                        "product_id" => $item_product->id,
+                        "price_in_order" => $item_product->price,
+                        "size" => $request->size,
+                        "color" => $request->color,
+                        "ordered_quantity" => $request->quantitys,
+                    ]);
+                
+                $product = Product::find($item_product->id);
+                if ($product) {
+                    $product->quantity = (int) $product->quantity - (int) $request->quantity;
+                    $product->save();
+                }
+
+            if ($order) {
+                $msg_content = "<h1>";
+                $msg_content = " طلب جديد بواسطة" . $user->name;
+                $msg_content .= "</h1>";
+                $msg_content .= "<br>";
+                $msg_content .= "<h3>";
+                $msg_content .= "تفاصيل الطلب: ";
+                $msg_content .= "</h3>";
+
+                $msg_content .= "<h4>";
+                $msg_content .= "اسم المستلم: ";
+                $msg_content .= $order->recipient_name;
+                $msg_content .= "</h4>";
+
+
+                $msg_content .= "<h4>";
+                $msg_content .= "رقم هاتف المستلم: ";
+                $msg_content .= $order->recipient_phone;
+                $msg_content .= "</h4>";
+
+
+                $msg_content .= "<h4>";
+                $msg_content .= "عنوان المستلم: ";
+                $msg_content .= $order->recipient_address;
+                $msg_content .= "</h4>";
+
+
+                $msg_content .= "<h4>";
+                $msg_content .= "الاجمالي : ";
+                $msg_content .= $order->sub_total;
+                $msg_content .= "</h4>";
+
+
+                $msg_content .= "<h4>";
+                $msg_content .= "سعر البيع : ";
+                $msg_content .= $order->total_sell_price;
+                $msg_content .= "</h4>";
+
+
+                $msg_content .= "<h4>";
+                $msg_content .= "نوع حساب الطالب : ";
+                $msg_content .= $order->user_type;
+                $msg_content .= "</h4>";
+
+                $this->sendEmail("kotbekareem74@gmail.com", "طلب جديد", $msg_content);
+
+            }
+
+            DB::commit();
+
+            return $this->handleResponse(
+                true,
+                "تم اكتمال الطلب بنجاح سوف نتواصل مع المستلم لتاكيد وارسال الطلب",
+                [],
+                [
+                    $order
+                ],
+                []
+            );
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return $this->handleResponse(
+                false,
+                "فشل اكمال الطلب",
+                [$e->getMessage()],
+                [],
+                []
+            );
+        }
+    }
 
     public function ordersAll(Request $request) {
         $user = $request->user();

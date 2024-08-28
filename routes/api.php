@@ -54,6 +54,7 @@ Route::get("/wishlist/get", [WishlistController::class, "getWishlist"])->middlew
 
 // Orders endpoints
 Route::post("/orders/place", [OrdersController::class, "placeOrder"])->middleware('auth:sanctum');
+Route::post("/orders/place/single", [OrdersController::class, "placeSingleOrder"])->middleware('auth:sanctum');
 Route::get("/orders/order/{id}", [OrdersController::class, "order"])->middleware('auth:sanctum');
 Route::get("/orders/user/all", [OrdersController::class, "ordersAll"])->middleware('auth:sanctum');
 Route::get("/orders/user/pagination", [OrdersController::class, "ordersPagination"])->middleware('auth:sanctum');
