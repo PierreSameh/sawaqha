@@ -335,6 +335,14 @@ class OrdersController extends Controller
                 ],
                 []
             );
+        } else {
+            return $this->handleResponse(
+                false,
+                "Product Not Found",
+                [],
+                [],
+                []
+            );
         }
         } catch (\Exception $e) {
             DB::rollBack();
