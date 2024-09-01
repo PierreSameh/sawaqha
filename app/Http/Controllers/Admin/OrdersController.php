@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
 use App\Models\Order;
+use App\Models\User;
 use App\HandleResponseTrait;
 use App\SendEmailTrait;
 
@@ -336,7 +337,10 @@ class OrdersController extends Controller
         $query = $request->input('query');
 
         $orders = Order::with("products")->latest()
-        ->where('recipient_phone', 'like', "%{$query}%")
+        ->whereHas("user", function ($q) use ($query) {
+            $q->where("phone", 'like', "%{$query}%");
+        })
+        // ->where('recipient_phone', 'like', "%{$query}%")
         ->orWhere('id', 'like', "%{$query}%")
         ->paginate(20);
 
