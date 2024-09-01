@@ -338,7 +338,7 @@ class OrdersController extends Controller
         $orders = Order::with("products")->latest()
         ->where('recipient_phone', 'like', "%{$query}%")
         ->orWhere('id', 'like', "%{$query}%")
-        ->get();
+        ->paginate(20);
 
         return view('Admin.orders.search', compact('orders'));
     }

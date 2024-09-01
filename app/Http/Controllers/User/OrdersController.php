@@ -259,7 +259,7 @@ class OrdersController extends Controller
                         "order_id" => $order->id,
                         "product_id" => $item_product->id,
                         "price_in_order" => $item_product->price,
-                        "ordered_quantity" => $request->quantitys,
+                        "ordered_quantity" => $request->quantity,
                     ]);
                     if($request->size){
                     $record_product->size = $request->size;
