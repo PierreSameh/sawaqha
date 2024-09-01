@@ -55,7 +55,6 @@ Route::prefix('admin')->group(function () {
             Route::post("/update", [ProductsController::class, "update"])->name("admin.products.update");
             Route::get("/delete/{id}", [ProductsController::class, "deleteIndex"])->name("admin.products.delete.confirm");
             Route::post("/delete", [ProductsController::class, "delete"])->name("admin.products.delete");
-            Route::get("/search", [OrdersController::class, "search"])->name("admin.products.search");
         });
         // Orders
         Route::prefix('orders')->group(function () {
@@ -72,6 +71,8 @@ Route::prefix('admin')->group(function () {
             Route::get("/order/cancel/{id}", [OrdersController::class, "cancelIndex"])->name("admin.orders.cancel");
             Route::post("/order/cancel/confirm/{id}", [OrdersController::class, "cancel"])->name("admin.orders.cancel.post");
             Route::get("/order/success/{id}", [OrdersController::class, "successIndex"])->name("admin.orders.success");
+            Route::get("/search", [OrdersController::class, "search"])->name("admin.orders.search");
+
         });
         // Requests
         Route::prefix('requests')->group(function () {
