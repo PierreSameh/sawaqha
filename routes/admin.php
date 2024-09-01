@@ -55,7 +55,7 @@ Route::prefix('admin')->group(function () {
             Route::post("/update", [ProductsController::class, "update"])->name("admin.products.update");
             Route::get("/delete/{id}", [ProductsController::class, "deleteIndex"])->name("admin.products.delete.confirm");
             Route::post("/delete", [ProductsController::class, "delete"])->name("admin.products.delete");
-            Route::get("/search", [ProductsController::class, "search"])->name("admin.products.search");
+            Route::get("/search", [OrdersController::class, "search"])->name("admin.products.search");
         });
         // Orders
         Route::prefix('orders')->group(function () {

@@ -340,7 +340,7 @@ class OrdersController extends Controller
         ->orWhere('id', 'like', "%{$query}%")
         ->get();
 
-        return view('Admin.products.search', compact('orders'));
+        return view('Admin.orders.search', compact('orders'));
     }
 
 }
