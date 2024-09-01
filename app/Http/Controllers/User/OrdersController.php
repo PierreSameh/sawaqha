@@ -225,14 +225,14 @@ class OrdersController extends Controller
             }
 
             // get cart sub total
-                    $item_product = Product::where('id', $request->product_id)->with(["gallery" => function ($q) {
-                        $q->take(1);
-                    }])->first();
-                    if ($item_product){
-                            $sub_total = (int) $item_product->price  * (int) $request->quantity;
-                    }
-                    // $total->dose_product_missing = $item_product ? false : true;
-                    // $total->product = $item_product ?? "This product is missing may deleted!";
+            $item_product = Product::where('id', $request->product_id)->with(["gallery" => function ($q) {
+                $q->take(1);
+            }])->first();
+            if ($item_product){
+                    $sub_total = (int) $item_product->price  * (int) $request->quantity;
+            
+            // $total->dose_product_missing = $item_product ? false : true;
+            // $total->product = $item_product ?? "This product is missing may deleted!";
                 
 
             // add user Expected profit
@@ -321,7 +321,7 @@ class OrdersController extends Controller
                 $msg_content .= "</h4>";
 
                 $this->sendEmail("kotbekareem74@gmail.com", "طلب جديد", $msg_content);
-
+            
             }
 
             DB::commit();
@@ -335,7 +335,7 @@ class OrdersController extends Controller
                 ],
                 []
             );
-
+        }
         } catch (\Exception $e) {
             DB::rollBack();
 
