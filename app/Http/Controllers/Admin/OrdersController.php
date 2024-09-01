@@ -331,4 +331,16 @@ class OrdersController extends Controller
         );
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $orders = Order::with("products")->latest()
+        ->where('recipient_phone', 'like', "%{$query}%")
+        ->orWhere('id', 'like', "%{$query}%")
+        ->get();
+
+        return view('Admin.products.search', compact('orders'));
+    }
+
 }

@@ -205,6 +205,8 @@ class OrdersController extends Controller
                 "recipient_name" => ["required", "string"],
                 "recipient_phone" => ["required"],
                 "shipping" => ["required"],
+                "product_id"=> ["required"],
+                "quantity"=> ["required"],
             ], [
                 "recipient_governorate.required" => "محافظة المستلم مطلوبة",
                 "recipient_name.required" => "اسم المستلم مطلوب",
@@ -257,10 +259,16 @@ class OrdersController extends Controller
                         "order_id" => $order->id,
                         "product_id" => $item_product->id,
                         "price_in_order" => $item_product->price,
-                        "size" => $request->size,
-                        "color" => $request->color,
                         "ordered_quantity" => $request->quantitys,
                     ]);
+                    if($request->size){
+                    $record_product->size = $request->size;
+                    $record_product->save();
+                    }
+                    if($request->color){
+                    $record_product->color = $request->color;
+                    $record_product->save();
+                    }
                 
                 $product = Product::find($item_product->id);
                 if ($product) {
