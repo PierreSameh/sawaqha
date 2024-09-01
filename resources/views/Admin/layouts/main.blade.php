@@ -325,7 +325,7 @@
                             <!-- Dropdown - Messages -->
                             <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
                                 aria-labelledby="searchDropdown">
-                                <form method="GET" action="{{route('admin.products.search')}}" class="form-inline mr-auto w-100 navbar-search">
+                                <form method="GET" action="{{route('admin.orders.search')}}" class="form-inline mr-auto w-100 navbar-search">
                                     <div class="input-group">
                                         <input type="text" class="form-control bg-light border-0 small"
                                             placeholder="...ابحث عن" aria-label="Search"
