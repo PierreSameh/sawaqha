@@ -4,11 +4,13 @@
 
 @php
     $orders = App\Models\Order::latest()->with("user")->paginate(15);
+    $ordersCount = count(App\Models\Order::all());
 @endphp
 
 @section("content")
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">All Orders</h1>
+    <h3>Orders: {{$ordersCount}}</h3>
 </div>
 
 <div class="card shadow mb-4">
