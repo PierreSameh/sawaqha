@@ -77,7 +77,7 @@ class AuthController extends Controller
             "is_phone_verified" => false,
             "is_email_verified" => false,
             "password" => (int) $request->joined_with === 1 ? Hash::make($request->password) : ((int) $request->joined_with === 2 ? Hash::make("Google") : Hash::make("Facebook")),
-            "invitaion_code" => $this->generateUniqueReferralCode(),
+            "invitation_code" => $this->generateUniqueReferralCode(),
             "used_invitation_code" => $request->referral_code ?? null,
         ]);
 
@@ -112,7 +112,7 @@ class AuthController extends Controller
     {
     do {
         $code = Str::random(10);
-    } while (User::where('referral_code', $code)->exists());
+    } while (User::where('invitation_code', $code)->exists());
     
     return $code;
     }

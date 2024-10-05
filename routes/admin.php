@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\MoneyRequestsContrller;
 use App\Http\Controllers\Admin\BacnnerController;
 use App\Http\Controllers\Admin\SocialController;
 use App\Http\Controllers\Admin\ShipController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Middleware\GuestAdminMiddleware;
 
 Route::prefix('admin')->group(function () {
@@ -94,5 +95,6 @@ Route::prefix('admin')->group(function () {
         Route::get('/ship/rate/{rate}/edit', [ShipController::class,'edit'])->name('admin.edit.rates');
         Route::post('/ship/rate/{rate}/update', [ShipController::class,'update'])->name('admin.update.rates');
         Route::post('/ship/rate/{rate}/delete', [ShipController::class,'delete'])->name('admin.delete.rates');
+        Route::get('/users/all', [UserController::class, 'index'])->name('admin.users.all');
     });
 });
