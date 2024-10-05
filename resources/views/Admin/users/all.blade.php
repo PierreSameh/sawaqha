@@ -3,7 +3,7 @@
 @section("title", "Users - All")
 
 @php
-    $usersCount = App\Models\Users::all();
+    $usersCount = App\Models\User::all();
 @endphp
 
 @section("content")
