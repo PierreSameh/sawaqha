@@ -4,11 +4,13 @@
 
 @php
     $orders = App\Models\Order::latest()->with("user")->where("status", 2)->paginate(15);
+    $count = App\Models\Order::latest()->with("user")->where("status", 2)->get();
 @endphp
 
 @section("content")
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Orders - Confirmed</h1>
+    <h3>Orders: {{count($count)}}</h3>
 </div>
 
 <div class="card shadow mb-4">
