@@ -2,12 +2,14 @@
 
 @section("title", "Users - All")
 
-
+@php
+    $usersCount = App\Models\Users::all();
+@endphp
 
 @section("content")
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">المستخدمين</h1>
-    <h3>عدد المستخدمين: {{count($users)}}</h3>
+    <h3>عدد المستخدمين: {{count($usersCount)}}</h3>
 </div>
 
 <div class="card shadow mb-4">
