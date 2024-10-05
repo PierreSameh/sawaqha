@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+
 
 class AuthController extends Controller
 {
@@ -31,6 +33,7 @@ class AuthController extends Controller
             ],
             "user_type" => ["required", "in:1,2"],
             "joined_with" => ["required", "in:1,2,3"],
+            "referral_code"=> ["nullable", "string"]
         ], [
             "name.required" => "ادخل اسمك الثلاثي",
             "name.regex" => "ادخل الاسم ثلاثي",
@@ -74,6 +77,8 @@ class AuthController extends Controller
             "is_phone_verified" => false,
             "is_email_verified" => false,
             "password" => (int) $request->joined_with === 1 ? Hash::make($request->password) : ((int) $request->joined_with === 2 ? Hash::make("Google") : Hash::make("Facebook")),
+            "invitaion_code" => $this->generateUniqueReferralCode(),
+            "used_invitation_code" => $request->referral_code ?? null,
         ]);
 
 
@@ -101,6 +106,15 @@ class AuthController extends Controller
                 ]
             );
         endif;
+    }
+
+    private function generateUniqueReferralCode()
+    {
+    do {
+        $code = Str::random(10);
+    } while (User::where('referral_code', $code)->exists());
+    
+    return $code;
     }
 
     public function askEmailCode(Request $request) {
