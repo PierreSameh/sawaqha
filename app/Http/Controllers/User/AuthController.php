@@ -707,6 +707,8 @@ class AuthController extends Controller
 
     public function getUser(Request $request) {
         $user = $request->user();
+        $count = User::where('used_invitation_code', $user->invitation_code)->get();
+        $user->invitation_times = count($count);
 
         if ($user) {
             return $this->handleResponse(
@@ -714,7 +716,7 @@ class AuthController extends Controller
                 "عملية ناجحة",
                 [],
                 [
-                    "user" => $user->only("name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified", "balance", "expected_profit")
+                    "user" => $user->only("name", "email", "phone", "user_type", "picture", "is_email_verified", "is_phone_verified", "balance", "expected_profit", "invitation_code", "invitation_times")
                 ],
                 [
                     "user_type" => [
