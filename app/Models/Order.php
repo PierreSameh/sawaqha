@@ -16,6 +16,7 @@ class Order extends Model
         "your_sec_phone",
         "recipient_name",
         "recipient_phone",
+        "recipient_second_phone",
         "recipient_governorate",
         "recipient_address",
         "sub_total",

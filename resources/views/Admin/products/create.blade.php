@@ -10,7 +10,7 @@
             class="fas fa-arrow-left fa-sm text-white-50"></i> العودة إلى الخلف</a>
 </div>
 @php
-    $categories = App\Models\Category::latest()->get();
+    $categories = App\Models\Category::where('isMainCat', 0)->latest()->get();
 @endphp
 <div class="card p-3 mb-3" id="products_wrapper">
     <div class="d-flex justify-content-between" style="gap: 16px">

@@ -29,4 +29,8 @@ class Category extends Model
         return $this->hasMany('App\Models\Category', 'category_id');
     }
 
+    public function getIsMainCategoryAttribute()
+{
+    return $this->isMainCat == 1;
+}
 }
