@@ -57,7 +57,7 @@ class BacnnerController extends Controller
         $validator = Validator::make($request->all(), [
             "name" => ["required", "max:100"],
             "description" => ["required"],
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif',
         ], [
             "name.required" => "ادخل اسم الاعلان",
             "name.max" => "يجب الا يتعدى اسم الاعلان 100 حرف",
@@ -103,7 +103,7 @@ class BacnnerController extends Controller
             "id" => ["required"],
             "name" => ["required", "max:100"],
             "description" => ["required"],
-            'thumbnail' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'thumbnail' => 'image|mimes:jpeg,png,jpg,gif',
         ], [
             "name.required" => "ادخل اسم الاعلان",
             "name.max" => "يجب الا يتعدى اسم الاعلان 100 حرف",

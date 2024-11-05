@@ -23,6 +23,7 @@
                         <th>Phone</th>
                         <th>Invitation Code</th>
                         <th>Invites Count</th>
+                        <th>Profile</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,6 +37,7 @@
                                 $referred = App\Models\User::where('used_invitation_code', $user->invitation_code)->get();
                             @endphp
                             <td>{{ count($referred) }}</td>
+                            <td><a href="{{route("admin.users.get", $user->id)}}">Show</a></td>
                         </tr>
                     @endforeach
                 </tbody>

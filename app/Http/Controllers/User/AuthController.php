@@ -617,7 +617,7 @@ class AuthController extends Controller
 
     public function update(Request $request) {
         $validator = Validator::make($request->all(), [
-            'picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'picture' => 'image|mimes:jpeg,png,jpg,gif',
             "name" => ['regex:/^[\p{L} ]{3,}\s[\p{L} ]{3,}\s[\p{L} ]{3,}$/u'],
             "phone" => ["unique:users,phone"],
         ], [

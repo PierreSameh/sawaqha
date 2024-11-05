@@ -96,5 +96,6 @@ Route::prefix('admin')->group(function () {
         Route::post('/ship/rate/{rate}/update', [ShipController::class,'update'])->name('admin.update.rates');
         Route::post('/ship/rate/{rate}/delete', [ShipController::class,'delete'])->name('admin.delete.rates');
         Route::get('/users/all', [UserController::class, 'index'])->name('admin.users.all');
+        Route::get('/users/get-user/{userId}', [UserController::class, 'getUser'])->name('admin.users.get');
     });
 });

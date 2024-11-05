@@ -59,7 +59,7 @@ class CategoryController extends Controller
             "description" => ["required"],
             "category_type" => ["required"],
             "parent_category_id" => ["required_if:category_type,2"],
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif',
         ], [
             "name.required" => "ادخل اسم القسم",
             "name.max" => "يجب الا يتعدى اسم القسم 100 حرف",
@@ -110,7 +110,7 @@ class CategoryController extends Controller
             "category_type" => ["required"],
             "parent_category_id" => ["required_if:category_type,2"],
 
-            'thumbnail' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'thumbnail' => 'image|mimes:jpeg,png,jpg,gif',
         ], [
             "name.required" => "ادخل اسم القسم",
             "name.max" => "يجب الا يتعدى اسم القسم 100 حرف",
