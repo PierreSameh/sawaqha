@@ -13,6 +13,7 @@ class Product extends Model
         "name",
         "main_image",
         "description",
+        "sec_description",
         "quantity",
         "price",
         "wholesale_price",

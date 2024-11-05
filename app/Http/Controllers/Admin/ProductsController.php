@@ -44,6 +44,7 @@ class ProductsController extends Controller
         $validator = Validator::make($request->all(), [
             "name" => ["required"],
             "description" => ["required"],
+            "sec_description" => ['nullable'],
             "quantity" => ["required", "numeric"],
             "price" => ["required", "numeric"],
             "category_id" => ["required"],
@@ -89,6 +90,7 @@ class ProductsController extends Controller
         $product = Product::create([
             "name" => $request->name,
             "description" => $request->description,
+            "sec_description" => $request->sec_description ?? null,
             "quantity" => $request->quantity,
             "price" => $request->price,
             "main_image" => '/images/uploads/Products/' . $main_image_name,
@@ -142,6 +144,7 @@ class ProductsController extends Controller
             "id" => ["required"],
             "name" => ["required"],
             "description" => ["required"],
+            "sec_description" => ['nullable'],
             "quantity" => ["required", "numeric"],
             "price" => ["required", "numeric"],
             "category_id" => ["required"],
@@ -190,6 +193,7 @@ class ProductsController extends Controller
 
         $product->name = $request->name;
         $product->description = $request->description;
+        $product->sec_description = $request->sec_description ?? null;
         $product->quantity = $request->quantity;
         $product->price = $request->price;
         $product->wholesale_price = $request->wholesale_price;

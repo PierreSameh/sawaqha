@@ -47,6 +47,9 @@
             <label for="Description" class="form-label">الوصف</label>
             <textarea rows="7" class="form-control" id="Description"  placeholder="الوصف" style="resize: none" v-model="description">
             </textarea>
+            <label for="Description-sec" class="form-label">الوصف الثان</label>
+            <textarea rows="7" class="form-control" id="Description-sec"  placeholder="الوصف الثان" style="resize: none" v-model="sec_description">
+            </textarea>
             <div class="form-group pt-4 pb-4" style="width: max-content; height: 300px;min-width: 100%">
                 <label for="thumbnail" class="w-100 h-100">
                     <svg v-if="!thumbnail && !thumbnail_path" xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-photo-up" width="24" height="24" viewBox="0 0 24 24" strokeWidth="1.5" style="width: 100%; height: 100%; object-fit: cover; padding: 10px; border: 1px solid; border-radius: 1rem" stroke="#043343" fill="none" strokeLinecap="round" strokeLinejoin="round">
@@ -166,6 +169,7 @@ createApp({
         return {
             name: null,
             description: null,
+            sec_description: null,
             category_id: '',
             price: 0,
             quantity: 0,
@@ -223,6 +227,7 @@ createApp({
                 const response = await axios.post(`{{ route("admin.products.create") }}`, {
                     name: this.name,
                     description: this.description,
+                    sec_description: this.sec_description,
                     price: this.price,
                     quantity: this.quantity,
                     wholesale_price: this.wholesale_price,
