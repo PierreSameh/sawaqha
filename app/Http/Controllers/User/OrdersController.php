@@ -41,6 +41,7 @@ class OrdersController extends Controller
                 "recipient_address" => ["required"],
                 "recipient_name" => ["required", "string"],
                 "recipient_phone" => ["required"],
+                "recipient_second_phone" => ['nullable'],
                 "shipping" => ["required"],
             ], [
                 "recipient_governorate.required" => "محافظة المستلم مطلوبة",
@@ -89,6 +90,7 @@ class OrdersController extends Controller
             $order = Order::create([
                 "recipient_name"                => $request->recipient_name,
                 "recipient_phone"               => $request->recipient_phone,
+                "recipient_second_phone"        => $request->recipient_second_phone,
                 "recipient_address"             => $request->recipient_address,
                 "sub_total"                     => $sub_total,
                 "user_type"                     => $user->user_type == 1 ? "مسوق" : "تاجر",
@@ -204,6 +206,7 @@ class OrdersController extends Controller
                 "recipient_address" => ["required"],
                 "recipient_name" => ["required", "string"],
                 "recipient_phone" => ["required"],
+                "recipient_second_phone" => ['nullable'],
                 "shipping" => ["required"],
                 "product_id"=> ["required"],
                 "quantity"=> ["required"],
@@ -245,6 +248,7 @@ class OrdersController extends Controller
             $order = Order::create([
                 "recipient_name"                => $request->recipient_name,
                 "recipient_phone"               => $request->recipient_phone,
+                "recipient_second_phone"        => $request->recipient_second_phone,
                 "recipient_address"             => $request->recipient_address,
                 "sub_total"                     => $sub_total,
                 "user_type"                     => $user->user_type == 1 ? "مسوق" : "تاجر",

@@ -130,6 +130,10 @@
             <label>Recipient Phone</label>
             <span class="form-control">{{ $order->recipient_phone }}</span>
         </div>
+        <div class="form-group">
+            <label>Recipient Second Phone</label>
+            <span class="form-control">{{ $order->recipient_second_phone }}</span>
+        </div>
         <div class="form-group" style="grid-column: span 2">
             <label>Recipient Address</label>
             <span class="form-control">{{ $order->recipient_address }}</span>
